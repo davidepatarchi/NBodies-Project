@@ -2,6 +2,7 @@
 
 namespace nbodies
 {
+    //Planet's constructor and methods
     Planet::Planet(double m, std::array<double, 2> const &r,
                    std::array<double, 2> const &v, std::array<double, 2> a)
     {
@@ -13,7 +14,8 @@ namespace nbodies
         a_[0] = a[0];
         a_[1] = a[1];
     }
-    // fine costruttore classe
+
+    //add functions(single-value and vectors)
     void Planet::add_mass(double m) { double m_{m}; }
     void Planet::add_position(std::array<double, 2> pos)
     {
@@ -37,5 +39,6 @@ namespace nbodies
     }
     void Planet::add_acceleration_x(double x) { a_[0] = x; }
     void Planet::add_acceleration_y(double y) { a_[1] = y; }
+    //end of Planet's constructor and methods
 
 } // namespace nbodies
