@@ -14,6 +14,22 @@ namespace nbodies
         a_[0] = a[0];
         a_[1] = a[1];
     }
+    vector& vector::operator+(vector const& z) {
+            x += z.x;
+            y += z.y;
+            return *this;
+        }
+    vector& vector::operator*(double a) {
+            x *= a;
+            y *= a;
+            return *this;
+        }
+    vector& vector::operator*(double a) {
+            x *= a;
+            y *= a;
+            return *this;
+        }
+
 
     //add functions(single-value and vectors)
     void Planet::add_mass(double m) { double m_{m}; }
