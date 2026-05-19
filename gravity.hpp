@@ -7,6 +7,11 @@
 
 namespace nbodies
 {
+    struct vector {
+        double x;
+        double y;
+        vector sum(vector u, vector y)
+    };
     namespace constants
     {
         inline constexpr double G = 6.67e-11;
