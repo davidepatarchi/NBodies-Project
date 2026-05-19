@@ -31,30 +31,17 @@ namespace nbodies
         }
 
 
-    //add functions(single-value and vectors)
-    void Planet::add_mass(double m) { double m_{m}; }
-    void Planet::add_position(std::array<double, 2> pos)
-    {
-        r_[0] = pos[0] * nbodies::constants::AU;
-        r_[1] = pos[1] * nbodies::constants::AU;
+    double & Planet::mass() const {
+        return m_;
     }
-    void Planet::add_position_x(double x) { r_[0] = x * nbodies::constants::AU; }
-    void Planet::add_position_y(double y) { r_[1] = y * nbodies::constants::AU; }
-    void Planet::add_velocity(std::array<double, 2> vel)
-    {
-        v_[0] = vel[0];
-        v_[1] = vel[1];
+    vector & Planet::position() {
+        return r_;
+    };
+    vector & Planet::velocity() {
+        return v_;
     }
-
-    void Planet::add_velocity_x(double x) { v_[0] = x; }
-    void Planet::add_velocity_y(double y) { v_[1] = y; }
-    void Planet::add_acceleration(std::array<double, 2> acc)
-    {
-        a_[0] = acc[0];
-        a_[1] = acc[1];
+    vector & Planet::acceleration() {
+        return a_;
     }
-    void Planet::add_acceleration_x(double x) { a_[0] = x; }
-    void Planet::add_acceleration_y(double y) { a_[1] = y; }
-    //end of Planet's constructor and methods
 
 } // namespace nbodies

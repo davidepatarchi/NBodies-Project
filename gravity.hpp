@@ -36,17 +36,13 @@ namespace nbodies
 
     public:
         Planet(double m, std::array<double, 2> const &r, std::array<double, 2> const &v, std::array<double, 2> const &a);
+        
+        double mass() const;
+        vector & position();
+        vector & velocity();
+        vector & acceleration();
 
-        void add_mass(double m);
-        void add_position(std::array<double, 2> const &pos);
-        void add_position_x(double x);
-        void add_position_y(double y);
-        void add_velocity(std::array<double, 2> const &vel);
-        void add_velocity_x(double x);
-        void add_velocity_y(double y);
-        void add_acceleration(std::array<double, 2> const &acc);
-        void add_acceleration_x(double x);
-        void add_acceleration_y(double y);
+        
     };
 
     std::vector<Planet> iteration(int n, std::vector<Planet> const &start, std::vector<Planet> &end)
