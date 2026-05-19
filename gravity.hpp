@@ -7,6 +7,17 @@
 
 namespace nbodies
 {
+    struct vector {
+        double x;
+
+
+
+           double y;
+        vector& operator+(vector const& z);
+        vector& operator*(double a);
+        vector& operator-(vector const& z);
+    };
+
     namespace constants
     {
         inline constexpr double G = 6.67e-11;
