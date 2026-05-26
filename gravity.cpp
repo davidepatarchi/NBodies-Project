@@ -1,6 +1,7 @@
 #include "gravity.hpp"
 
 namespace nbodies {
+bool Planet::check_m_validity() { return m_ > 0 ? true : false; }
 
 Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   m_ = m;
