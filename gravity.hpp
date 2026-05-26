@@ -44,6 +44,15 @@ class System {
   std::vector<Planet> s;
   public:
   void iteration();
+  double energy() {
+    double kinetic{0.};
+    for(int i{0}; i<s.size(); ++i) {
+      kinetic+=0.5*s[i].mass()*pow(s[i].velocity().norm(), 2);
+    }
+    double potential() {
+      
+    }
+  }
 };
 
 }  // namespace nbodies
