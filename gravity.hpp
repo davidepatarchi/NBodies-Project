@@ -2,8 +2,8 @@
 #define NBODIES_GRAVITY_HPP
 
 #include <cmath>
-#include <vector>
 #include <fstream>
+#include <vector>
 
 namespace nbodies {
 
@@ -20,10 +20,10 @@ struct vector {
   double y;
 
   vector& operator+(vector const& z);
-  vector& operator*(double a);//vedi se fare il prodotto simmetrico(overload di operatore fuori da vector)
+  vector& operator*(double a);  // vedi se fare il prodotto simmetrico(overload
+                                // di operatore fuori da vector)
   vector& operator-(vector const& z);
   double norm();
-
 };
 
 class Planet {
@@ -36,34 +36,26 @@ class Planet {
  public:
   Planet(double m, vector const& r, vector const& v, vector const& a);
 
-  double const& mass() const;
+  double & mass();
   vector& position();      // get position
   vector& velocity();      // get velocity
   vector& acceleration();  // get acceleration
 };
+
 class System {
-  std::vector<Planet> s;
-<<<<<<< HEAD
-  public:
+ private:
+  std::vector<Planet> planets;
+
+ public:
   void iteration();
+  void read_file (const std::string& filename);
+
   double energy() {
     double kinetic{0.};
-    for(int i{0}; i<s.size(); ++i) {
-      kinetic+=0.5*s[i].mass()*pow(s[i].velocity().norm(), 2);
+    for (int i{0}; i < planets.size(); ++i) {
+      kinetic += 0.5 * planets[i].mass() * pow(planets[i].velocity().norm(), 2);
     }
-    double potential() {
-      
-=======
-
-  System read_file () {
-
-  }
-
-  System iteration() {
-    for(int i{0}; i<s.size(); i++) {
-      s[i].position()=s[i].position()+s[]
->>>>>>> 3ba1a81 (commento)
-    }
+    double potential() {}
   }
 };
 
