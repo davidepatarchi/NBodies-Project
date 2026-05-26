@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <vector>
+#include <fstream>
 
 namespace nbodies {
 
@@ -42,6 +43,7 @@ class Planet {
 };
 class System {
   std::vector<Planet> s;
+<<<<<<< HEAD
   public:
   void iteration();
   double energy() {
@@ -51,6 +53,16 @@ class System {
     }
     double potential() {
       
+=======
+
+  System read_file () {
+
+  }
+
+  System iteration() {
+    for(int i{0}; i<s.size(); i++) {
+      s[i].position()=s[i].position()+s[]
+>>>>>>> 3ba1a81 (commento)
     }
   }
 };
