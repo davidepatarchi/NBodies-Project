@@ -28,6 +28,7 @@ class Planet {
   vector r_{0., 0.};  // position
   vector v_{0., 0.};  // velocity
   vector a_{0., 0.};  // acceleration
+  bool check_m_validity();
 
  public:
   Planet(double m, vector const& r, vector const& v, vector const& a);
