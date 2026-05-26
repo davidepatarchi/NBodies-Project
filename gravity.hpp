@@ -19,8 +19,10 @@ struct vector {
   double y;
 
   vector& operator+(vector const& z);
-  vector& operator*(double a);
+  vector& operator*(double a);//vedi se fare il prodotto simmetrico(overload di operatore fuori da vector)
   vector& operator-(vector const& z);
+  double norm();
+
 };
 
 class Planet {
@@ -38,27 +40,11 @@ class Planet {
   vector& velocity();      // get velocity
   vector& acceleration();  // get acceleration
 };
-struct System {
+class System {
   std::vector<Planet> s;
-  System iteration() {
-    for(int i{0}; i<s.size(); i++) {
-      s[i].position()=s[i].position()+s[]
-    }
-
-  }
-
-
+  public:
+  void iteration();
 };
-/*std::vector<Planet> iteration(int n, vector const& start) {
-  for (int i{0}; i < n; ++i) {
-    double a_fin_x{0};
-    for (int j{0}; j < n; ++j) {
-      if (j != i) {
-        a_fin_x +=
-      }
-    }
-  }
-}*/
 
 }  // namespace nbodies
 
