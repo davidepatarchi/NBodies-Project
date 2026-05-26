@@ -1,7 +1,6 @@
 #ifndef NBODIES_GRAVITY_HPP
 #define NBODIES_GRAVITY_HPP
 
-#include <array>
 #include <cmath>
 #include <vector>
 
@@ -38,7 +37,17 @@ class Planet {
   vector& velocity();      // get velocity
   vector& acceleration();  // get acceleration
 };
+struct System {
+  std::vector<Planet> s;
+  System iteration() {
+    for(int i{0}; i<s.size(); i++) {
+      s[i].position()=s[i].position()+s[]
+    }
 
+  }
+
+
+};
 /*std::vector<Planet> iteration(int n, vector const& start) {
   for (int i{0}; i < n; ++i) {
     double a_fin_x{0};
