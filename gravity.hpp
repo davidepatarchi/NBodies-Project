@@ -27,6 +27,7 @@ struct vector {
 };
 
 class Planet {
+ private:
   double m_{0.};      // mass
   vector r_{0., 0.};  // position
   vector v_{0., 0.};  // velocity
@@ -36,7 +37,7 @@ class Planet {
  public:
   Planet(double m, vector const& r, vector const& v, vector const& a);
 
-  double & mass();
+  double& mass();
   vector& position();      // get position
   vector& velocity();      // get velocity
   vector& acceleration();  // get acceleration
@@ -48,15 +49,15 @@ class System {
 
  public:
   void iteration();
-  void read_file (const std::string& filename);
+  void read_file(const std::string& filename);
 
-  double energy() {
+  /*double energy() {
     double kinetic{0.};
     for (int i{0}; i < planets.size(); ++i) {
       kinetic += 0.5 * planets[i].mass() * pow(planets[i].velocity().norm(), 2);
     }
     double potential() {}
-  }
+  }*/
 };
 
 }  // namespace nbodies

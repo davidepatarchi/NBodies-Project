@@ -20,6 +20,8 @@ vector& vector::operator*(double a) {
 double vector::norm() { return x * x + y * y; }
 // FINE METODI DI VECTOR
 
+
+
 // METODI DI PLANET
 Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   m_ = m;
@@ -30,12 +32,14 @@ Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   a_.x = a.x;
   a_.y = a.y;
 }
-double & Planet::mass() { return m_; }
+double& Planet::mass() { return m_; }
 vector& Planet::position() { return r_; };
 vector& Planet::velocity() { return v_; }
 vector& Planet::acceleration() { return a_; }
 bool Planet::check_m_validity() { return m_ > 0 ? true : false; }
 // FINE METODI DI PLANET
+
+
 
 // METODI DI SYSTEM
 void System::iteration() {
