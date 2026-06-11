@@ -1,29 +1,25 @@
 #include "gravity.hpp"
-#include <random>
 #include <iostream>
-#include <vector>
 
 int main()
-{
-    
+{   
     int N;
-    std::cout << "Quanti pianeti?" << '\n';
+    std::cout << "How many planets are request?" << '\n';
     std::cin >> N;
+    double T;
+    std::cout << "How many seconds will the simulation last?" << '\n';
+    std::cin >> T;
 
-    std::vector<nbodies::Planet> Planets_start{0};
-    for (int i{0}; i < N; i++)
-    {
-        Planets_start[i].nbodies::Planet::add_mass(pow(generate_mass_value(eng), generate_mass_exp(eng)));
+    nbodies::System planets;
+    planets.read_file("dati.txt");
 
-        Planets_start[i].nbodies::Planet::add_position_x(generate_position(eng));
-        Planets_start[i].nbodies::Planet::add_position_y(generate_position(eng));
-
-        Planets_start[i].nbodies::Planet::add_velocity_x(generate_velocity(eng));
-        Planets_start[i].nbodies::Planet::add_velocity_y(generate_velocity(eng));
-
-        Planets_start[i].nbodies::Planet::add_acceleration_x(0.);
-        Planets_start[i].nbodies::Planet::add_acceleration_y(0.);
+    for (int t{0}; t < T; t += nbodies::constants::dt) {
+        planets.iteration();
+        /*for (int i{0}; i < planets.size(); ++i) {
+            std::cout << "Mass : " << planets[i].mass() << '\n';
+            std::cout << "Position : " << planets[i].position().x << ', ' << planets[i].position().y << '\n';
+        }*/
+        std::cout << planets.energy();
     }
 
-    std::vector<nbodies::Planet> Planet_end{0};
 }
