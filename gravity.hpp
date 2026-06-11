@@ -23,6 +23,7 @@ struct vector {
   vector& operator*(double a);  // vedi se fare il prodotto simmetrico(overload
                                 // di operatore fuori da vector)
   vector& operator-(vector const& z);
+  bool operator==(vector const& z);
   double norm();
 };
 

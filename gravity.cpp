@@ -12,12 +12,20 @@ vector& vector::operator*(double a) {
   y *= a;
   return *this;
 }
-vector& vector::operator*(double a) {
-  x *= a;
-  y *= a;
+vector& vector::operator-(vector const& z) {
+  x -= z.x;
+  y -= z.y;
   return *this;
 }
-double vector::norm() { return x * x + y * y; }
+double vector::norm() { return sqrt(x * x + y * y); }
+bool vector::operator==(vector const& z) {
+  if(x==z.x && y == z.y) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 // FINE METODI DI VECTOR
 
 // METODI DI PLANET
