@@ -1,6 +1,7 @@
 #include "gravity.hpp"
 
 namespace nbodies {
+
 // METODI DI VECTOR
 vector& vector::operator+(vector const& z) {
   x += z.x;
@@ -20,8 +21,6 @@ vector& vector::operator*(double a) {
 double vector::norm() { return x * x + y * y; }
 // FINE METODI DI VECTOR
 
-
-
 // METODI DI PLANET
 Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   m_ = m;
@@ -32,14 +31,16 @@ Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   a_.x = a.x;
   a_.y = a.y;
 }
-double& Planet::mass() { return m_; }
+bool Planet::check_m_validity() { return m_ > 0 ? true : false; }
+
+double& Planet::mass() {
+  check_m_validity();
+  return m_;
+}
 vector& Planet::position() { return r_; };
 vector& Planet::velocity() { return v_; }
 vector& Planet::acceleration() { return a_; }
-bool Planet::check_m_validity() { return m_ > 0 ? true : false; }
 // FINE METODI DI PLANET
-
-
 
 // METODI DI SYSTEM
 void System::iteration() {
@@ -89,6 +90,23 @@ void System::read_file(const std::string& filename) {
          body.velocity().x >> body.velocity().y) {
     planets.push_back(body);
   }
+}
+
+double System::energy() {
+  double kinetic{0.};
+  for (int i{0}; i < planets.size(); ++i) {
+    kinetic += 0.5 * planets[i].mass() * pow(planets[i].velocity().norm(), 2);
+  }
+
+  double potential{0.};
+  for (int i{0}; i < planets.size(); ++i) {
+    for (int j{0}; j < i; ++j) {
+      potential += -nbodies::constants::G *
+                   (planets[i].mass() * planets[j].mass()) /
+                   (planets[i].position() - planets[j].position()).norm();
+    }
+  }
+  return kinetic + potential;
 }
 // FINE METODI DI SYSTEM
 

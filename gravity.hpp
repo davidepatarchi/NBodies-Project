@@ -50,14 +50,7 @@ class System {
  public:
   void iteration();
   void read_file(const std::string& filename);
-
-  /*double energy() {
-    double kinetic{0.};
-    for (int i{0}; i < planets.size(); ++i) {
-      kinetic += 0.5 * planets[i].mass() * pow(planets[i].velocity().norm(), 2);
-    }
-    double potential() {}
-  }*/
+  double energy();
 };
 
 }  // namespace nbodies
