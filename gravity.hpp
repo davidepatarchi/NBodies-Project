@@ -19,12 +19,12 @@ struct vector {
   double x;
   double y;
 
-  vector& operator+(vector const& z);
-  vector& operator*(double a);  // vedi se fare il prodotto simmetrico(overload
+  vector operator+(vector const& z) const;
+  vector operator*(double a) const;  // vedi se fare il prodotto simmetrico(overload
                                 // di operatore fuori da vector)
-  vector& operator-(vector const& z);
-  bool operator==(vector const& z);
-  double norm();
+  vector operator-(vector const& z) const;
+  bool operator==(vector const& z) const;
+  double norm() const;
 };
 
 class Planet {

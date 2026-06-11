@@ -3,30 +3,21 @@
 namespace nbodies {
 
 // METODI DI VECTOR
-vector& vector::operator+(vector const& z) {
-  x += z.x;
-  y += z.y;
-  return *this;
+vector vector::operator+(vector const& z) const {
+  return {x+z.x,y+z.y};
 }
-vector& vector::operator*(double a) {
-  x *= a;
-  y *= a;
-  return *this;
+vector vector::operator*(double a) const {
+  return {x*a,y*a};
 }
-vector& vector::operator-(vector const& z) {
-  x -= z.x;
-  y -= z.y;
-  return *this;
+vector vector::operator-(vector const& z) const {
+  return {x-z.x, y-z.y};
 }
-double vector::norm() { return sqrt(x * x + y * y); }
-bool vector::operator==(vector const& z) {
-  if(x==z.x && y == z.y) {
-    return true;
-  }
-  else {
-    return false;
-  }
+bool vector::operator==(vector const& z) const {//da capire se ha senso o se nei test farli separati x e y
+    return x==z.x && y == z.x;
 }
+
+double vector::norm() const { return sqrt(x * x + y * y); }
+
 // FINE METODI DI VECTOR
 
 // METODI DI PLANET
@@ -76,8 +67,6 @@ void System::iteration() {
                         2),
                 -1.5);
         somma = somma + (planets[i].position() - planets[j].position()) * a;
-      } else {
-        // else what??
       }
     }
 
