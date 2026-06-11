@@ -20,6 +20,8 @@ double vector::norm() const { return sqrt(x * x + y * y); }
 
 // FINE METODI DI VECTOR
 
+
+
 // METODI DI PLANET
 Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   m_ = m;
@@ -41,41 +43,50 @@ vector& Planet::velocity() { return v_; }
 vector& Planet::acceleration() { return a_; }
 // FINE METODI DI PLANET
 
+
+
 // METODI DI SYSTEM
+int System::size() { return planets.size();}
 void System::iteration() {
+  // evolving position
   for (int i{0}; i < planets.size(); ++i) {
-    planets[i].position() = planets[i].position() +
-                            planets[i].velocity() * 0.01 +
-                            planets[i].acceleration() * 0.5 * 0.01 *
-                                0.01;  // controlla che il prodotto per uno
-                                       // scalare non è commutativo
+    planets[i].position() =
+        planets[i].position() + planets[i].velocity() * nbodies::constants::dt +
+        planets[i].acceleration() * 0.5 *
+            pow(nbodies::constants::dt, 2);  // controlla che il prodotto per
+                                             // uno scalare non è commutativo
   }
 
-  std::vector<vector> v;
-
+  // saving initial acceleration and evolving acceleration
+  std::vector<vector> init_acc;
   for (int i{0}; i < planets.size(); ++i) {
     vector somma{0., 0.};
-    v.push_back(planets[i].acceleration());
+    init_acc.push_back(planets[i].acceleration());
 
-    // cambia le acc
     for (int j{0}; j < planets.size(); ++j) {
       if (j != i) {
-        double a =
+        double new_acc =
             constants::G * planets[j].mass() *
             pow((constants::eps * constants::eps) +
                     pow((planets[j].position() - planets[i].position()).norm(),
                         2),
                 -1.5);
+<<<<<<< HEAD
         somma = somma + (planets[i].position() - planets[j].position()) * a;
+=======
+        somma =
+            somma + (planets[i].position() - planets[j].position()) * new_acc;
+>>>>>>> 91b9e431978c9095707cace4648cd687d95ebd01
       }
     }
-
     planets[i].acceleration() = somma * (-1);
   }
 
+  // evolving velocity
   for (int i{0}; i < planets.size(); ++i) {
-    planets[i].velocity() = planets[i].velocity() +
-                            (planets[i].acceleration() + v[i]) * (0.5 * 0.01);
+    planets[i].velocity() =
+        planets[i].velocity() + (planets[i].acceleration() + init_acc[i]) *
+                                    (0.5 * nbodies::constants::dt);
   }
 }
 

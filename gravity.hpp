@@ -49,6 +49,7 @@ class System {
   std::vector<Planet> planets;
 
  public:
+  int size();
   void iteration();
   void read_file(const std::string& filename);
   double energy();
