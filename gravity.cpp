@@ -8,7 +8,7 @@ vector vector::operator*(double a) const { return {x * a, y * a}; }
 vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
 bool vector::operator==(vector const& z)
     const {  // da capire se ha senso o se nei test farli separati x e y
-  return x == z.x && y == z.x;
+  return x == z.x && y == z.y;
 }
 
 double vector::norm() const { return sqrt(x * x + y * y); }
@@ -37,14 +37,14 @@ vector& Planet::acceleration() { return a_; }
 // FINE METODI DI PLANET
 
 // METODI DI SYSTEM
-Planet System::get_planet(int i) { return planets[i]; }
+Planet& System::get_planet(size_t i) { return planets[i]; }
 
-int System::size() { return planets.size(); }
+size_t System::size() const { return planets.size(); }
 
 void System::iteration() {
-  int N = planets.size();
+  size_t N = planets.size();
   // evolving position
-  for (int i{0}; i < N; ++i) {
+  for (size_t i{0}; i < N; ++i) {
     planets[i].position() =
         planets[i].position() + planets[i].velocity() * nbodies::constants::dt +
         planets[i].acceleration() * 0.5 *
@@ -54,11 +54,11 @@ void System::iteration() {
 
   // saving initial acceleration and evolving acceleration
   std::vector<vector> init_acc;
-  for (int i{0}; i < N; ++i) {
+  for (size_t i{0}; i < N; ++i) {
     vector somma{0., 0.};
     init_acc.push_back(planets[i].acceleration());
 
-    for (int j{0}; j < N; ++j) {
+    for (size_t j{0}; j < N; ++j) {
       if (j != i) {
         double new_acc =
             constants::G * planets[j].mass() *
@@ -74,7 +74,7 @@ void System::iteration() {
   }
 
   // evolving velocity
-  for (int i{0}; i < N; ++i) {
+  for (size_t i{0}; i < N; ++i) {
     planets[i].velocity() =
         planets[i].velocity() + (planets[i].acceleration() + init_acc[i]) *
                                     (0.5 * nbodies::constants::dt);
@@ -92,15 +92,15 @@ void System::read_file(const std::string& filename) {
 }
 
 double System::energy() {
-  int N = planets.size();
+  size_t N = planets.size();
   double kinetic{0.};
-  for (int i{0}; i < N; ++i) {
+  for (size_t i{0}; i < N; ++i) {
     kinetic += 0.5 * planets[i].mass() * pow(planets[i].velocity().norm(), 2);
   }
 
   double potential{0.};
-  for (int i{0}; i < N; ++i) {
-    for (int j{0}; j < i; ++j) {
+  for (size_t i{0}; i < N; ++i) {
+    for (size_t j{0}; j < i; ++j) {
       potential += -nbodies::constants::G *
                    (planets[i].mass() * planets[j].mass()) /
                    (planets[i].position() - planets[j].position()).norm();

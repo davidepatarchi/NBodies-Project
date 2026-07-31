@@ -50,8 +50,8 @@ class System {
   std::vector<Planet> planets;
 
  public:
-  Planet get_planet(int i);
-  int size();
+  Planet& get_planet(size_t i);
+  size_t size() const;
   void iteration();
   void read_file(const std::string& filename);
   double energy();
