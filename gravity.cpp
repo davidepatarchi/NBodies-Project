@@ -3,24 +3,17 @@
 namespace nbodies {
 
 // METODI DI VECTOR
-vector vector::operator+(vector const& z) const {
-  return {x+z.x,y+z.y};
-}
-vector vector::operator*(double a) const {
-  return {x*a,y*a};
-}
-vector vector::operator-(vector const& z) const {
-  return {x-z.x, y-z.y};
-}
-bool vector::operator==(vector const& z) const {//da capire se ha senso o se nei test farli separati x e y
-    return x==z.x && y == z.x;
+vector vector::operator+(vector const& z) const { return {x + z.x, y + z.y}; }
+vector vector::operator*(double a) const { return {x * a, y * a}; }
+vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
+bool vector::operator==(vector const& z)
+    const {  // da capire se ha senso o se nei test farli separati x e y
+  return x == z.x && y == z.x;
 }
 
 double vector::norm() const { return sqrt(x * x + y * y); }
 
 // FINE METODI DI VECTOR
-
-
 
 // METODI DI PLANET
 Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
@@ -43,10 +36,11 @@ vector& Planet::velocity() { return v_; }
 vector& Planet::acceleration() { return a_; }
 // FINE METODI DI PLANET
 
-
-
 // METODI DI SYSTEM
-int System::size() { return planets.size();}
+Planet System::get_planet(int i) { return planets[i]; }
+
+int System::size() { return planets.size(); }
+
 void System::iteration() {
   // evolving position
   for (int i{0}; i < planets.size(); ++i) {
