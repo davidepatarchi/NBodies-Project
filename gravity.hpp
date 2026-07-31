@@ -1,6 +1,6 @@
 #ifndef NBODIES_GRAVITY_HPP
 #define NBODIES_GRAVITY_HPP
-
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <fstream>
 #include <vector>
