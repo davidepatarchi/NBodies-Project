@@ -13,7 +13,7 @@ int main() {
   nbodies::System planets;
   planets.read_file("dati.txt");
 
-  for (int t{0}; t < T; t += nbodies::constants::dt) {
+  for (double t{0.}; t < T; t += nbodies::constants::dt) {
     planets.iteration();
 
     std::cout << "ITERATION NUMBER: " << t << '\n';
