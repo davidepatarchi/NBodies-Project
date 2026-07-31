@@ -71,12 +71,8 @@ void System::iteration() {
                     pow((planets[j].position() - planets[i].position()).norm(),
                         2),
                 -1.5);
-<<<<<<< HEAD
-        somma = somma + (planets[i].position() - planets[j].position()) * a;
-=======
         somma =
             somma + (planets[i].position() - planets[j].position()) * new_acc;
->>>>>>> 91b9e431978c9095707cace4648cd687d95ebd01
       }
     }
     planets[i].acceleration() = somma * (-1);
