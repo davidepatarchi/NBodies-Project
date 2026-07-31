@@ -10,6 +10,12 @@ int main() {
   nbodies::System planets;
   planets.read_file("dati.txt");
   int N = planets.size();
+  /*for (int i{0}; i < N; ++i) {
+    planets.get_planet(i).position().x *= nbodies::constants::AU;
+    planets.get_planet(i).position().x *= nbodies::constants::AU;
+  }*/
+
+  //CONTROLLO SULLE MASSE
 
   for (double t{nbodies::constants::dt}; t <= T; t += nbodies::constants::dt) {
     planets.iteration();
