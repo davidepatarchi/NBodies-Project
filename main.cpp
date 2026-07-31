@@ -17,14 +17,14 @@ int main() {
     planets.iteration();
 
     std::cout << "ITERATION NUMBER: " << t << '\n';
-    for (int i{0}; i < planets.size(); ++i) {
+    for (int i{0}; i < N; ++i) {
       std::cout << "Mass : " << planets.get_planet(i).mass() << '\n';
-      std::cout << "Position : " << planets.get_planet(i).position().x << ', '
+      std::cout << "Position : " << planets.get_planet(i).position().x << ", "
                 << planets.get_planet(i).position().y << '\n';
-      std::cout << "Velocity : " << planets.get_planet(i).velocity().x << ', '
+      std::cout << "Velocity : " << planets.get_planet(i).velocity().x << ", "
                 << planets.get_planet(i).velocity().y << '\n';
       std::cout << "Velocity : " << planets.get_planet(i).acceleration().x
-                << ', ' << planets.get_planet(i).acceleration().y << '\n';
+                << ", " << planets.get_planet(i).acceleration().y << '\n';
     }
     std::cout << "Energy: " << planets.energy() << "\n\n";
   }
