@@ -14,7 +14,7 @@ int main() {
     planets.get_planet(i).position().x *= nbodies::constants::AU;
   }*/
 
-  //CONTROLLO SULLE MASSE DA FARE
+  /*//CONTROLLO SULLE MASSE DA FARE
   int width = 800;
   int height = 800;
   sf::RenderWindow window(sf::VideoMode(width, height), "NBodies");
@@ -29,13 +29,13 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-        }
+        }*/
 
   for (double t{nbodies::constants::dt}; t <= T; t += nbodies::constants::dt) {
     planets.iteration();
 
     std::cout << "ITERATION NUMBER: " << t << '\n';
-    for (size_t i{0}; i < N; ++i) {
+    for (size_t i{0}; i < N; ++i) { 
       std::cout << "Mass : " << planets.get_planet(i).mass() << '\n';
       std::cout << "Position : " << planets.get_planet(i).position().x << ", "
                 << planets.get_planet(i).position().y << '\n';
@@ -43,7 +43,7 @@ int main() {
                 << planets.get_planet(i).velocity().y << '\n';
       std::cout << "Acceleration : " << planets.get_planet(i).acceleration().x
                 << ", " << planets.get_planet(i).acceleration().y << '\n';
-      //usando questo stesso ciclo dobbiamo riscalare tutte le posizioni in modo che siano in accordo con la cartella di sfml
+      /*//usando questo stesso ciclo dobbiamo riscalare tutte le posizioni in modo che siano in accordo con la cartella di sfml
       //con questa formula
       //float x_schermo = static_cast<float>((x_fisica * scale) + (WIDTH / 2.0));
        //     float y_schermo = static_cast<float>((-y_fisica * scale) + (HEIGHT / 2.0));
@@ -58,11 +58,11 @@ int main() {
             planet_shape.setPosition(x_schermo, y_schermo);
 
             // Disegna il pianeta sulla finestra
-            window.draw(planet_shape);
+            window.draw(planet_shape);*/
 
     }
     std::cout << "Energy: " << planets.energy() << "\n\n";
-    window.display();
+    //window.display();
 
 
   }
