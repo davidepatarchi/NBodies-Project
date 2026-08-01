@@ -50,8 +50,8 @@ int main() {
     planets.iteration();
     window.clear(sf::Color::Black);
     for(int i{0}; i<planets.size(); ++i) {
-      double x_pixel = AU_pixel_x(planets.get_planet(i).position().x);
-      double y_pixel = AU_pixel_y(planets.get_planet(i).position().y);
+      double x_pixel = nbodies::AU_pixel_x(planets.get_planet(i).position().x);
+      double y_pixel = nbodies::AU_pixel_y(planets.get_planet(i).position().y);
       // Crea un cerchio per rappresentare il pianeta
       sf::CircleShape planet_shape(5.0); // Raggio di 5 pixel
       planet_shape.setFillColor(sf::Color::Red);
