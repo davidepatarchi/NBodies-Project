@@ -8,7 +8,7 @@ int main() {
   std::cin >> T;
 
   nbodies::System planets;
-  planets.read_file("dati.txt");
+  planets.read_file("solarsystem.txt");
   // size_t N = planets.size();
   //  2. Creazione della finestra SFML
   const int WIDTH = 800;
