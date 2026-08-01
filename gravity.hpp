@@ -57,6 +57,9 @@ class System {
   double energy();
 };
 
+double AU_pixel_x(double x);
+double AU_pixel_y(double y);
+
 }  // namespace nbodies
 
 #endif
