@@ -48,11 +48,11 @@ int main() {
       //float x_schermo = static_cast<float>((x_fisica * scale) + (WIDTH / 2.0));
        //     float y_schermo = static_cast<float>((-y_fisica * scale) + (HEIGHT / 2.0));
        //creiamo anche il cerchio che indichi i vari pianeti
-       sf::CircleShape planet_shape(5.0f); // Raggio di 5 pixel
+       sf::CircleShape planet_shape(5.0); // Raggio di 5 pixel
             planet_shape.setFillColor(sf::Color::White);
             
             // Centra l'origine della forma SFML in modo che venga disegnata centrata sulla coordinata
-            planet_shape.setOrigin(5.0f, 5.0f); 
+            planet_shape.setOrigin(5.0, 5.0); 
             
             // Sposta la forma alle coordinate calcolate
             planet_shape.setPosition(x_schermo, y_schermo);
