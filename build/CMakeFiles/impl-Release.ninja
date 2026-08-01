@@ -217,6 +217,8 @@ build CMakeFiles/progetto.dir/Release/main.cpp.o: CXX_COMPILER__progetto_unscann
   FLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -fno-omit-frame-pointer -D_GLIBCXX_ASSERTIONS -D_GLIBCXX_SANITIZE_STD_ALLOCATOR -O3 -DNDEBUG -std=c++20
   OBJECT_DIR = CMakeFiles/progetto.dir/Release
   OBJECT_FILE_DIR = CMakeFiles/progetto.dir/Release
+  TARGET_COMPILE_PDB = CMakeFiles/progetto.dir/Release/
+  TARGET_PDB = Release/progetto.pdb
 
 build CMakeFiles/progetto.dir/Release/gravity.cpp.o: CXX_COMPILER__progetto_unscanned_Release /home/davidepatarchi/programmazione_fisica/pf_progetto/NBodies-Project/gravity.cpp || cmake_object_order_depends_target_progetto_RELEASE
   DEFINES = -DCMAKE_INTDIR=\"Release\"
@@ -224,6 +226,8 @@ build CMakeFiles/progetto.dir/Release/gravity.cpp.o: CXX_COMPILER__progetto_unsc
   FLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast -fno-omit-frame-pointer -D_GLIBCXX_ASSERTIONS -D_GLIBCXX_SANITIZE_STD_ALLOCATOR -O3 -DNDEBUG -std=c++20
   OBJECT_DIR = CMakeFiles/progetto.dir/Release
   OBJECT_FILE_DIR = CMakeFiles/progetto.dir/Release
+  TARGET_COMPILE_PDB = CMakeFiles/progetto.dir/Release/
+  TARGET_PDB = Release/progetto.pdb
 
 
 # =============================================================================
@@ -239,8 +243,9 @@ build Release/progetto: CXX_EXECUTABLE_LINKER__progetto_Release CMakeFiles/proge
   OBJECT_DIR = CMakeFiles/progetto.dir/Release
   POST_BUILD = :
   PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/progetto.dir/Release/
   TARGET_FILE = Release/progetto
-  TARGET_PDB = progetto.dbg
+  TARGET_PDB = Release/progetto.pdb
 
 
 #############################################

@@ -1,4 +1,5 @@
 #include "gravity.hpp"
+#include <iostream>
 
 namespace nbodies {
 
@@ -83,10 +84,20 @@ void System::iteration() {
 
 void System::read_file(const std::string& filename) {
   std::ifstream file(filename);
-  Planet body(0., {0., 0.}, {0., 0.}, {0., 0.});
+  double mass;
+  double position_x;
+  double position_y;
+  double velocity_x;
+  double velocity_y;
 
-  while (file >> body.mass() >> body.position().x >> body.position().y >>
-         body.velocity().x >> body.velocity().y) {
+  if (!file.is_open()) {
+    std::cout << "PROBLEMA" <<'\n'; // Gestire eventuale errore di apertura file
+
+  }
+
+  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y) {
+    Planet body(mass, {position_x, position_y}, {velocity_x, velocity_y},
+                {0., 0.});
     planets.push_back(body);
   }
 }
