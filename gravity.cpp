@@ -122,11 +122,11 @@ double System::energy() {
 // FINE METODI DI SYSTEM
 
 //FUNZONI PER SFML
-double AU_pixel_x(double x){
-  return (1 + x/nbodies::constants::AU)*400;
+float AU_pixel_x(double x){
+  return float((1 + x/nbodies::constants::AU)*400.);
 }
-double AU_pixel_y(double y){
-  return (1 - y/nbodies::constants::AU)*400;
+float AU_pixel_y(double y){
+  return float((1 - y/nbodies::constants::AU)*400.);
 }
 
 }  // namespace nbodies
