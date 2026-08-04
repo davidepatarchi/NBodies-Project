@@ -1,4 +1,5 @@
 #include "gravity.hpp"
+
 #include <iostream>
 
 namespace nbodies {
@@ -91,14 +92,32 @@ void System::read_file(const std::string& filename) {
   double velocity_y;
 
   if (!file.is_open()) {
-    std::cout << "PROBLEMA" <<'\n'; // Gestire eventuale errore di apertura file
-
+    std::cout << "ERROR IN FILE OPENING" << '\n';
   }
 
   while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y) {
     Planet body(mass, {position_x, position_y}, {velocity_x, velocity_y},
                 {0., 0.});
     planets.push_back(body);
+  }
+  // SETTING ACCELERATIONS FROM INITIAL CONDITIONS
+  size_t N = planets.size();
+  for (size_t i{0}; i < N; ++i) {
+    vector somma{0., 0.};
+
+    for (size_t j{0}; j < N; ++j) {
+      if (j != i) {
+        double new_acc =
+            constants::G * planets[j].mass() *
+            pow((constants::eps * constants::eps) +
+                    pow((planets[j].position() - planets[i].position()).norm(),
+                        2),
+                -1.5);
+        somma =
+            somma + (planets[i].position() - planets[j].position()) * new_acc;
+      }
+    }
+    planets[i].acceleration() = somma * (-1);
   }
 }
 
@@ -121,12 +140,12 @@ double System::energy() {
 }
 // FINE METODI DI SYSTEM
 
-//FUNZONI PER SFML
-float AU_pixel_x(double x){
-  return float((1 + x/nbodies::constants::AU)*400.);
+// FUNZONI PER SFML
+float AU_pixel_x(double x) {
+  return float((1 + (x / nbodies::constants::AU)*0.9) * 400.);
 }
-float AU_pixel_y(double y){
-  return float((1 - y/nbodies::constants::AU)*400.);
+float AU_pixel_y(double y) {
+  return float((1 - (y / nbodies::constants::AU)*0.9) * 400.);
 }
 
 }  // namespace nbodies
