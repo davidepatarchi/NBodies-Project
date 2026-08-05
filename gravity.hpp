@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <fstream>
+#include <iostream>
+#include <stdexcept>
 #include <vector>
 
 namespace nbodies {
@@ -34,15 +36,18 @@ class Planet {
   vector r_{0., 0.};  // position
   vector v_{0., 0.};  // velocity
   vector a_{0., 0.};  // acceleration
-  bool check_m_validity();
+  bool check_m_validity() const;
 
  public:
   Planet(double m, vector const& r, vector const& v, vector const& a);
 
-  double& mass();
+  double mass() const;
   vector& position();      // get position
   vector& velocity();      // get velocity
   vector& acceleration();  // get acceleration
+  vector const& position() const;
+  vector const& velocity() const;
+  vector const& acceleration() const;
 };
 
 class System {
@@ -55,10 +60,14 @@ class System {
   void iteration();
   void read_file(const std::string& filename);
   double energy();
+  vector momentum();
 };
 
 float AU_pixel_x(double x);
 float AU_pixel_y(double y);
+
+double get_mean(std::vector<double> const& vec);
+double get_error(std::vector<double> const& vec);
 
 }  // namespace nbodies
 

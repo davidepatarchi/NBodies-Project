@@ -5,14 +5,27 @@
 int main() {
   nbodies::System planets;
 
+  // SETTING TIMES
+  double t{0};
+  double T;
+  std::cout << "How many days is the simulations going to last?" << '\n';
+  std::cin >> T;
+  T *= 86400.;
+  if (nbodies::constants::dt >= T) {
+    throw std::runtime_error("ERROR: The time chosen is too short!");
+  }
+
   // READING FILE WITH PLANETS DATA
-  planets.read_file("figure8.txt");
+  planets.read_file("solarsystem.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
   const int HEIGHT = 800;
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
+
+  std::vector<double> energy;
+  std::vector<nbodies::vector> momentum;
 
   // GRAPHIC EVOLUTION OF THE SYSTEM
   while (window.isOpen()) {
@@ -25,7 +38,12 @@ int main() {
       }
     }
 
-    planets.iteration();
+    if (t <= T) {
+      planets.iteration();
+      // CREATING ENERGY RANGE
+      energy.push_back(planets.energy());
+      momentum.push_back(planets.momentum());
+    }
 
     // SETTING FIGURES AND COLORS
     window.clear(sf::Color::Black);
@@ -47,5 +65,31 @@ int main() {
       window.draw(planet_shape);
     }
     window.display();
+
+    t += nbodies::constants::dt;
   }
+
+  double mean_energy{nbodies::get_mean(energy)};
+  double error_energy{nbodies::get_error(energy)};
+  double rel_err_energy{std::abs(error_energy / mean_energy * 100.)};
+  std::cout << "ENERGY: " << mean_energy << " +/- " << error_energy
+            << " (Relative error: " << rel_err_energy << "%)" << '\n';
+  if (rel_err_energy < 1) {
+    std::cout << "ENERGY IS CONSERVED" << "\n\n";
+  } else {
+    std::cout << "ENERGY IS NOT CONSERVED" << "\n\n";
+  }
+
+  //NON FUNZIONA PERCHE LE FUNZIONI SONO FATTE PER DEI VECTOR<DOUBLE> E NON VECTOR<NBODIES::VECTOR>
+  /*double mean_momentum_x{nbodies::get_mean(momentum.x)};
+  double error_momentum_x{nbodies::get_error(momentum.x)};
+  double rel_err_momentum_x{
+      std::abs(error_momentum.x / mean_momentum.x * 100.)};
+  std::cout << "X-MOMENTUM: " << mean_momentum_x << " +/- " << error_momentum_x
+            << " (Relative error: " << rel_err_momentum_x << "%)" << '\n';
+  if (rel_err_energy < 1) {
+    std::cout << "X-MOMENTUM IS CONSERVED" << "\n\n";
+  } else {
+    std::cout << "X-MOMENTUM IS NOT CONSERVED" << "\n\n";
+  }*/
 }
