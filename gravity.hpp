@@ -66,9 +66,6 @@ class System {
 float AU_pixel_x(double x);
 float AU_pixel_y(double y);
 
-double get_mean(std::vector<double> const& vec);
-double get_error(std::vector<double> const& vec);
-
 }  // namespace nbodies
 
 #endif

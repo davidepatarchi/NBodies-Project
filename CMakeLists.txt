@@ -42,8 +42,8 @@ add_executable(progetto main.cpp gravity.cpp)
 target_link_libraries(progetto PRIVATE sfml-graphics)
 
 # aggiungere eventuali altri eseguibili
-file(COPY solarsystem.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY solarsystem.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY figure8.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY figure8.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 
 # il testing e' abilitato di default
 # per disabilitarlo, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione

@@ -99,7 +99,7 @@ void System::read_file(const std::string& filename) {
   double velocity_y;
 
   if (!file.is_open()) {
-    std::cout << "ERROR IN FILE OPENING" << '\n';
+    throw std::runtime_error("ERROR: File opening failed");
   }
 
   while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y) {
@@ -170,18 +170,6 @@ float AU_pixel_x(double x) {
 float AU_pixel_y(double y) {
   return float((1 - (y / nbodies::constants::AU) * 0.9) * 400.);
 }
-// END OF SFML FUNCTIONS
-
-// OUTPUT FUNCTIONS
-double get_mean(std::vector<double> const& vec) {
-  return std::accumulate(vec.begin(), vec.end(), 0.0) / double(vec.size());
-}
-double get_error(std::vector<double> const& vec) {
-  std::vector<double> vec2(vec.size());
-  std::transform(vec.begin(), vec.end(), vec2.begin(),
-                 [](double x) { return x * x; });
-  return sqrt((get_mean(vec2) - get_mean(vec) * get_mean(vec)) /
-              double(vec.size()));
-}
+// END OF SFML FUNCTIONS 
 
 }  // namespace nbodies
