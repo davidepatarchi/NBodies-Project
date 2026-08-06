@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("figure8.txt");
+  planets.read_file("solarsystem.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -24,10 +24,9 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
-  // std::vector<double> energy;
-  // std::vector<nbodies::vector> momentum;
   double init_energy{planets.energy()};
   nbodies::vector init_momentum{planets.momentum()};
+  double init_angular_momentum{planets.angular_momentum()};
 
   // GRAPHIC EVOLUTION OF THE SYSTEM
   while (window.isOpen()) {
@@ -42,12 +41,17 @@ int main() {
 
     if (t <= T) {
       planets.iteration();
-      // energy.push_back(planets.energy());
-      // momentum.push_back(planets.momentum());
     }
 
     // SETTING FIGURES AND COLORS
     window.clear(sf::Color::Black);
+    std::vector<sf::Color> palette = {sf::Color::Yellow,
+                                      sf::Color::Red,
+                                      sf::Color::Green,
+                                      sf::Color(139, 69, 19) /*Brown*/,
+                                      sf::Color::Magenta,
+                                      sf::Color::Cyan,
+                                      sf::Color::Blue};
 
     // CREATING ALL THE PLANETS
     for (size_t i{0}; i < planets.size(); ++i) {
@@ -56,7 +60,7 @@ int main() {
 
       // CREATING A CIRCLE
       sf::CircleShape planet_shape(5.f);  // 5 PIXELS RADIUS
-      planet_shape.setFillColor(sf::Color::Red);
+      planet_shape.setFillColor(palette[i % palette.size()]);
       planet_shape.setOrigin(5.f, 5.f);
 
       // SETTING COORDINATES
@@ -72,9 +76,13 @@ int main() {
 
   double fin_energy{planets.energy()};
   nbodies::vector fin_momentum{planets.momentum()};
+  double fin_angular_momentum{planets.angular_momentum()};
 
-  std::cout << "ENERGY RATIO: " << fin_energy / init_energy << '\n';
-  std::cout << "MOMENTUM RATIO" << fin_momentum.norm() / init_momentum.norm() << '\n';
-  
-  
+  std::cout << '\n';
+  std::cout << "ENERGY RATIO: " << std::abs(fin_energy / init_energy) << '\n';
+  std::cout << "MOMENTUM RATIO: "
+            << std::abs(fin_momentum.norm() / init_momentum.norm()) << '\n';
+  std::cout << "ANGULAR MOMENTUM RATIO: "
+            << std::abs(fin_angular_momentum / init_angular_momentum) << '\n';
+  std::cout << '\n';
 }

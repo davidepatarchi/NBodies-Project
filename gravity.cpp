@@ -55,17 +55,21 @@ void System::iteration() {
   size_t N = planets.size();
 
   // evolving position
-  for (size_t i{0}; i < N; ++i) {
-    planets[i].position() =
-        planets[i].position() + planets[i].velocity() * nbodies::constants::dt +
-        planets[i].acceleration() * 0.5 * pow(nbodies::constants::dt, 2);
-  }
+  std::for_each(planets.begin(), planets.end(), [](Planet& body) {
+    body.position() =
+        body.position() + body.velocity() * nbodies::constants::dt +
+        body.acceleration() * 0.5 * pow(nbodies::constants::dt, 2);
+  });
 
-  // saving initial acceleration and evolving acceleration
+  // saving initial acceleration
   std::vector<vector> init_acc;
+  init_acc.reserve(N);
+  std::transform(planets.begin(), planets.end(), std::back_inserter(init_acc),
+                 [](Planet const& body) { return body.acceleration(); });
+
+  // evolving acceleration
   for (size_t i{0}; i < N; ++i) {
     vector somma{0., 0.};
-    init_acc.push_back(planets[i].acceleration());
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
@@ -161,6 +165,14 @@ vector System::momentum() {
                                });
   return {momentum.x, momentum.y};
 }
+
+double System::angular_momentum() {
+  return std::accumulate(
+      planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
+        return sum + body.mass() * (body.position().x * body.velocity().y -
+                                    body.position().y * body.velocity().x);
+      });
+}
 // END OF SYSTEM'S METHODS
 
 // SFML FUNCTIONS
@@ -170,6 +182,6 @@ float AU_pixel_x(double x) {
 float AU_pixel_y(double y) {
   return float((1 - (y / nbodies::constants::AU) * 0.9) * 400.);
 }
-// END OF SFML FUNCTIONS 
+// END OF SFML FUNCTIONS
 
 }  // namespace nbodies

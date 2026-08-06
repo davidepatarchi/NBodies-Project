@@ -22,9 +22,8 @@ struct vector {
   double y;
 
   vector operator+(vector const& z) const;
-  vector operator*(
-      double a) const;  // vedi se fare il prodotto simmetrico(overload
-                        // di operatore fuori da vector)
+  vector operator*(double a) const;
+  // vedi se fare il prodotto simmetrico(overload di operatore fuori da vector)
   vector operator-(vector const& z) const;
   bool operator==(vector const& z) const;
   double norm() const;
@@ -61,6 +60,7 @@ class System {
   void read_file(const std::string& filename);
   double energy();
   vector momentum();
+  double angular_momentum();
 };
 
 float AU_pixel_x(double x);
