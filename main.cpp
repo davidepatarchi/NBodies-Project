@@ -8,7 +8,7 @@ int main() {
   // SETTING TIMES
   double t{0};
   double T;
-  std::cout << "How many days is the simulations going to last?" << '\n';
+  std::cout << "How many days is the simulations going to last?\n";
   std::cin >> T;
   T *= 86400.;
   if (nbodies::constants::dt >= T) {

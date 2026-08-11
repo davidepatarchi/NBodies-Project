@@ -18,7 +18,7 @@ double vector::norm() const { return sqrt(x * x + y * y); }
 // END OF VECTOR'S METHODS
 
 // PLANET'S METHODS
-Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
+Planet::Planet(double m, vector const& r, vector const& v, vector const& a, double radius) {
   m_ = m;
   r_.x = r.x;
   r_.y = r.y;
@@ -26,14 +26,22 @@ Planet::Planet(double m, vector const& r, vector const& v, vector const& a) {
   v_.y = v.y;
   a_.x = a.x;
   a_.y = a.y;
+  radius_ = radius;
 }
 bool Planet::check_m_validity() const { return m_ > 0 ? true : false; }
+bool Planet::check_radius() const {return radius_ > 0 ? true : false; }
 
 double Planet::mass() const {
   if (check_m_validity() == true) {
     return m_;
   }
   throw std::runtime_error("ERROR: Invalid mass!");
+}
+double Planet::radius() const {
+  if (check_radius()==true) {
+    return radius_;
+  }
+  throw std::runtime_error("ERROR: Invalid radius!");
 }
 // non-costant version
 vector& Planet::position() { return r_; }
@@ -50,10 +58,27 @@ vector const& Planet::acceleration() const { return a_; }
 Planet& System::get_planet(size_t i) { return planets[i]; }
 
 size_t System::size() const { return planets.size(); }
+bool System::remove(size_t i) {
+  if(i<planets.size()) {
+    planets.erase(planets.begin()+i-1);
+    return true;
+  }
+  return false;
+}
 
 void System::iteration() {
+  
   size_t N = planets.size();
-
+  for(size_t i{0}; i<N; ++i) {
+    for(size_t j{0}; j<N; ++j) {
+      if (i!=j) {
+        if ((planets[i].position() - planets[j].position()).norm()<=planets[i].radius()+planets[j].radius()) {
+          planets.remove(i);//da capire perchè non gli va bene
+          planets.remove(j);
+        }
+      }
+    }
+  }
   // evolving position
   std::for_each(planets.begin(), planets.end(), [](Planet& body) {
     body.position() =
@@ -101,14 +126,15 @@ void System::read_file(const std::string& filename) {
   double position_y;
   double velocity_x;
   double velocity_y;
+  double radius;
 
   if (!file.is_open()) {
     throw std::runtime_error("ERROR: File opening failed");
   }
 
-  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y) {
+  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y >> radius) {
     Planet body(mass, {position_x, position_y}, {velocity_x, velocity_y},
-                {0., 0.});
+                {0., 0.}, radius);
     planets.push_back(body);
   }
   // setting initial accelerations from data
@@ -185,3 +211,46 @@ float AU_pixel_y(double y) {
 // END OF SFML FUNCTIONS
 
 }  // namespace nbodies
+
+/*void System::iteration() {
+  size_t N = planets.size();
+
+  // evolving position
+  std::for_each(planets.begin(), planets.end(), [](Planet& body) {
+    body.position() =
+        body.position() + body.velocity() * nbodies::constants::dt +
+        body.acceleration() * 0.5 * pow(nbodies::constants::dt, 2);
+  });
+
+  // saving initial acceleration
+  std::vector<vector> init_acc;
+  init_acc.reserve(N);
+  std::transform(planets.begin(), planets.end(), std::back_inserter(init_acc),
+                 [](Planet const& body) { return body.acceleration(); });
+
+  // evolving acceleration
+  for (size_t i{0}; i < N; ++i) {
+    vector somma{0., 0.};
+
+    for (size_t j{0}; j < N; ++j) {
+      if (j != i) {
+        double new_acc =
+            constants::G * planets[j].mass() *
+            pow((constants::eps * constants::eps) +
+                    pow((planets[j].position() - planets[i].position()).norm(),
+                        2),
+                -1.5);
+        somma =
+            somma + (planets[i].position() - planets[j].position()) * new_acc;
+      }
+    }
+    planets[i].acceleration() = somma * (-1);
+  }
+
+  // evolving velocity
+  for (size_t i{0}; i < N; ++i) {
+    planets[i].velocity() =
+        planets[i].velocity() + (planets[i].acceleration() + init_acc[i]) *
+                                    (0.5 * nbodies::constants::dt);
+  }
+}*/
