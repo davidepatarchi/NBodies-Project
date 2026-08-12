@@ -18,7 +18,8 @@ double vector::norm() const { return sqrt(x * x + y * y); }
 // END OF VECTOR'S METHODS
 
 // PLANET'S METHODS
-Planet::Planet(double m, vector const& r, vector const& v, vector const& a, double radius) {
+Planet::Planet(double m, vector const& r, vector const& v, vector const& a,
+               double radius) {
   m_ = m;
   r_.x = r.x;
   r_.y = r.y;
@@ -29,7 +30,7 @@ Planet::Planet(double m, vector const& r, vector const& v, vector const& a, doub
   radius_ = radius;
 }
 bool Planet::check_m_validity() const { return m_ > 0 ? true : false; }
-bool Planet::check_radius() const {return radius_ > 0 ? true : false; }
+bool Planet::check_radius() const { return radius_ > 0 ? true : false; }
 
 double Planet::mass() const {
   if (check_m_validity() == true) {
@@ -38,7 +39,7 @@ double Planet::mass() const {
   throw std::runtime_error("ERROR: Invalid mass!");
 }
 double Planet::radius() const {
-  if (check_radius()==true) {
+  if (check_radius() == true) {
     return radius_;
   }
   throw std::runtime_error("ERROR: Invalid radius!");
@@ -58,27 +59,16 @@ vector const& Planet::acceleration() const { return a_; }
 Planet& System::get_planet(size_t i) { return planets[i]; }
 
 size_t System::size() const { return planets.size(); }
-bool System::remove(size_t i) {
+/*bool System::remove(size_t i) {
   if(i<planets.size()) {
     planets.erase(planets.begin()+i-1);
     return true;
   }
   return false;
-}
+}*/
 
 void System::iteration() {
-  
   size_t N = planets.size();
-  for(size_t i{0}; i<N; ++i) {
-    for(size_t j{0}; j<N; ++j) {
-      if (i!=j) {
-        if ((planets[i].position() - planets[j].position()).norm()<=planets[i].radius()+planets[j].radius()) {
-          planets.remove(i);//da capire perchè non gli va bene
-          planets.remove(j);
-        }
-      }
-    }
-  }
   // evolving position
   std::for_each(planets.begin(), planets.end(), [](Planet& body) {
     body.position() =
@@ -118,6 +108,32 @@ void System::iteration() {
                                     (0.5 * nbodies::constants::dt);
   }
 }
+void System::urti() {
+  size_t N = planets.size();
+  for (size_t i{0}; i < N; ++i) {
+    for (size_t j{0}; j < N; ++j) {
+      if (i != j) {
+        if ((planets[i].position() - planets[j].position()).norm() <=
+            planets[i].radius() + planets[j].radius()) {
+          vector new_position = (planets[i].position() * planets[i].mass() +
+                                 planets[j].position() * planets[j].mass()) *
+                                pow(planets[i].mass() + planets[j].mass(), -1);
+          vector new_velocity = (planets[i].velocity() * planets[i].mass() +
+                                 planets[j].velocity() * planets[j].mass()) *
+                                pow(planets[i].mass() + planets[j].mass(), -1);
+          
+          double new_mass = planets[i].mass() + planets[j].mass();
+          double new_radius = sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+          vector new_acceleration{(0.,0.)};
+          planets.erase(planets.begin() + i - 1);
+          planets.erase(planets.begin() + j - 1);
+          Planet new_planet{new_mass, new_position, new_velocity, new_acceleration, new_radius };
+          planets.push_back(new_planet);
+        }
+      }
+    }
+  }
+}
 
 void System::read_file(const std::string& filename) {
   std::ifstream file(filename);
@@ -132,7 +148,8 @@ void System::read_file(const std::string& filename) {
     throw std::runtime_error("ERROR: File opening failed");
   }
 
-  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y >> radius) {
+  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y >>
+         radius) {
     Planet body(mass, {position_x, position_y}, {velocity_x, velocity_y},
                 {0., 0.}, radius);
     planets.push_back(body);

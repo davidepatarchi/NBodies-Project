@@ -64,7 +64,7 @@ class System {
   double energy();
   vector momentum();
   double angular_momentum();
-  bool remove(size_t i);
+  void urti();
 };
 
 float AU_pixel_x(double x);

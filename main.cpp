@@ -41,6 +41,7 @@ int main() {
 
     if (t <= T) {
       planets.iteration();
+      planets.urti();
     }
 
     // SETTING FIGURES AND COLORS
