@@ -121,13 +121,15 @@ void System::urti() {
           vector new_velocity = (planets[i].velocity() * planets[i].mass() +
                                  planets[j].velocity() * planets[j].mass()) *
                                 pow(planets[i].mass() + planets[j].mass(), -1);
-          
+
           double new_mass = planets[i].mass() + planets[j].mass();
-          double new_radius = sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
-          vector new_acceleration{(0.,0.)};
+          double new_radius =
+              sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+          vector new_acceleration{(0., 0.)};
           planets.erase(planets.begin() + i - 1);
           planets.erase(planets.begin() + j - 1);
-          Planet new_planet{new_mass, new_position, new_velocity, new_acceleration, new_radius };
+          Planet new_planet{new_mass, new_position, new_velocity,
+                            new_acceleration, new_radius};
           planets.push_back(new_planet);
         }
       }

@@ -31,16 +31,17 @@ struct vector {
 
 class Planet {
  private:
-  double m_{0.};      // mass
-  vector r_{0., 0.};  // position
-  vector v_{0., 0.};  // velocity
-  vector a_{0., 0.};  // acceleration
-  double radius_{0.}; // raggio per collisioni
+  double m_{0.};       // mass
+  vector r_{0., 0.};   // position
+  vector v_{0., 0.};   // velocity
+  vector a_{0., 0.};   // acceleration
+  double radius_{0.};  // raggio per collisioni
   bool check_m_validity() const;
-  bool check_radius() const; // invariante di classe raggio
+  bool check_radius() const;  // invariante di classe raggio
 
  public:
-  Planet(double m, vector const& r, vector const& v, vector const& a, double radius_);
+  Planet(double m, vector const& r, vector const& v, vector const& a,
+         double radius_);
 
   double mass() const;
   vector& position();      // get position
@@ -49,7 +50,7 @@ class Planet {
   vector const& position() const;
   vector const& velocity() const;
   vector const& acceleration() const;
-  double radius() const;   // funzione per prendere il raggio
+  double radius() const;  // funzione per prendere il raggio
 };
 
 class System {
@@ -60,7 +61,7 @@ class System {
   Planet& get_planet(size_t i);
   size_t size() const;
   void iteration();
-  void read_file(const std::string& filename); // aggiunto il raggio
+  void read_file(const std::string& filename);  // aggiunto il raggio
   double energy();
   vector momentum();
   double angular_momentum();
