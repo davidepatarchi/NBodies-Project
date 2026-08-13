@@ -29,8 +29,8 @@ Planet::Planet(double m, vector const& r, vector const& v, vector const& a,
   a_.y = a.y;
   radius_ = radius;
 }
-bool Planet::check_m_validity() const { return m_ > 0 ? true : false; }
-bool Planet::check_radius() const { return radius_ > 0 ? true : false; }
+bool Planet::check_m_validity() const { return m_ >= 0. ? true : false; }
+bool Planet::check_radius() const { return radius_ >= 0. ? true : false; }
 
 double Planet::mass() const {
   if (check_m_validity() == true) {
@@ -59,13 +59,7 @@ vector const& Planet::acceleration() const { return a_; }
 Planet& System::get_planet(size_t i) { return planets[i]; }
 
 size_t System::size() const { return planets.size(); }
-/*bool System::remove(size_t i) {
-  if(i<planets.size()) {
-    planets.erase(planets.begin()+i-1);
-    return true;
-  }
-  return false;
-}*/
+
 
 void System::iteration() {
   size_t N = planets.size();
@@ -126,8 +120,8 @@ void System::urti() {
           double new_radius =
               sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
           vector new_acceleration{(0., 0.)};
-          planets.erase(planets.begin() + i - 1);
-          planets.erase(planets.begin() + j - 1);
+          planets.erase(planets.begin() + i);
+          planets.erase(planets.begin() + j);
           Planet new_planet{new_mass, new_position, new_velocity,
                             new_acceleration, new_radius};
           planets.push_back(new_planet);
