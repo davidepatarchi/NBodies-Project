@@ -103,7 +103,7 @@ void System::iteration() {
 }
 void System::urti() {
   size_t N = planets.size();
-  for (size_t i{0}; i < N; ++i) {
+  for (size_t i{0}; i < N; ++i)  {
     for (size_t j{0}; j < N; ++j) {
       if (i != j) {
         if ((planets[i].position() - planets[j].position()).norm() <=
@@ -114,29 +114,29 @@ void System::urti() {
           vector new_velocity = (planets[i].velocity() * planets[i].mass() +
                                  planets[j].velocity() * planets[j].mass()) *
                                 pow(planets[i].mass() + planets[j].mass(), -1);
-          vector new_acceleration;
+          vector new_acceleration{0., 0.};
 
           double new_mass = planets[i].mass() + planets[j].mass();
           double new_radius =
               sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
-          planets.erase(planets.begin() + i);
-          planets.erase(planets.begin() + j);
+          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
+          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j - 1));
           Planet new_planet{new_mass, new_position, new_velocity,
                             new_acceleration, new_radius};
           planets.push_back(new_planet);
           size_t M = planets.size();
           vector somma{0., 0.};
-          for (size_t j{0}; j < M; ++j) {
-            if (j != M - 1) {
+          for (size_t k{0}; k < M; ++k) {
+            if (k != M - 1) {
               double new_acc =
-                  constants::G * planets[j].mass() *
+                  constants::G * planets[k].mass() *
                   pow((constants::eps * constants::eps) +
-                          pow((planets[j].position() - planets[i].position())
+                          pow((planets[k].position() - new_planet.position())
                                   .norm(),
                               2),
                       -1.5);
               somma = somma +
-                      (planets[i].position() - planets[j].position()) * new_acc;
+                      (new_planet.position() - planets[k].position()) * new_acc;
             }
           }
           new_planet.acceleration() = somma * (-1);
@@ -145,7 +145,6 @@ void System::urti() {
     }
   }
 }
-
 
 void System::read_file(const std::string& filename) {
   std::ifstream file(filename);
