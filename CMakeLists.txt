@@ -42,13 +42,8 @@ add_executable(progetto main.cpp gravity.cpp)
 target_link_libraries(progetto PRIVATE sfml-graphics)
 
 # aggiungere eventuali altri eseguibili
-<<<<<<< HEAD
-file(COPY figure8.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY figure8.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
-=======
 file(COPY collision2.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 file(COPY collision2.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
->>>>>>> 2684c40fecd4e8a8008b60101d6b79e1e9766ee0
 
 # il testing e' abilitato di default
 # per disabilitarlo, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione

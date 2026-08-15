@@ -16,11 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-<<<<<<< HEAD
-  planets.read_file("figure8.txt");
-=======
   planets.read_file("collision2.txt");
->>>>>>> 2684c40fecd4e8a8008b60101d6b79e1e9766ee0
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -31,6 +27,10 @@ int main() {
   double init_energy{planets.energy()};
   nbodies::vector init_momentum{planets.momentum()};
   double init_angular_momentum{planets.angular_momentum()};
+
+  double init_scale_energy{planets.scale_energy()};
+  nbodies::vector init_scale_momentum{planets.scale_momentum()};
+  double init_scale_angular_momentum{planets.scale_angular_momentum()};
 
   // GRAPHIC EVOLUTION OF THE SYSTEM
   while (window.isOpen()) {
@@ -44,19 +44,19 @@ int main() {
     }
 
     if (t <= T) {
-      planets.iteration();
-      planets.collision();
+      for (int tau{0}; tau < 86400; tau += nbodies::constants::dt){
+        planets.iteration();
+        planets.collision();
+      }
     }
 
     // SETTING FIGURES AND COLORS
     window.clear(sf::Color::Black);
-    std::vector<sf::Color> palette = {sf::Color::Yellow,
-                                      sf::Color::Red,
-                                      sf::Color::Green,
-                                      sf::Color(139, 69, 19) /*Brown*/,
-                                      sf::Color::Magenta,
-                                      sf::Color::Cyan,
-                                      sf::Color::Blue};
+    std::vector<sf::Color> palette = {
+        sf::Color::Yellow,  sf::Color::Red,
+        sf::Color::Green,   sf::Color(139, 69, 19) /*Brown*/,
+        sf::Color::Magenta, sf::Color::Cyan,
+        sf::Color::Blue};
 
     // CREATING ALL THE PLANETS
     for (size_t i{0}; i < planets.size(); ++i) {
@@ -64,7 +64,8 @@ int main() {
       float y_pixel = nbodies::AU_pixel_y(planets.get_planet(i).position().y);
 
       // CREATING A CIRCLE
-      sf::CircleShape planet_shape(float(nbodies::pixel_radius(planets.get_planet(i).radius())));  // 5 PIXELS RADIUS
+      sf::CircleShape planet_shape(float(nbodies::pixel_radius(
+          planets.get_planet(i).radius())));  // 5 PIXELS RADIUS
       planet_shape.setFillColor(palette[i % palette.size()]);
       planet_shape.setOrigin(5.f, 5.f);
 
@@ -76,18 +77,73 @@ int main() {
     }
     window.display();
 
-    t += nbodies::constants::dt;
+    t += 86400.;
   }
 
   double fin_energy{planets.energy()};
   nbodies::vector fin_momentum{planets.momentum()};
   double fin_angular_momentum{planets.angular_momentum()};
 
+  double fin_scale_energy{planets.scale_energy()};
+  nbodies::vector fin_scale_momentum{planets.scale_momentum()};
+  double fin_scale_angular_momentum{planets.scale_angular_momentum()};
+
   std::cout << '\n';
-  std::cout << "ENERGY RATIO: " << std::abs(fin_energy / init_energy) << '\n';
-  std::cout << "MOMENTUM RATIO: "
-            << std::abs(fin_momentum.norm() / init_momentum.norm()) << '\n';
-  std::cout << "ANGULAR MOMENTUM RATIO: "
-            << std::abs(fin_angular_momentum / init_angular_momentum) << '\n';
+  std::cout << "INITIAL AND FINAL ENERGIES: " << init_energy << ", "
+            << fin_energy << " J \n";
+  std::cout << "INITIAL AND FINAL SCALE ENERGIES: " << init_scale_energy << ", "
+            << fin_scale_energy << " J \n";
+  if (init_energy == fin_energy) {
+    std::cout << "ENERGY CONSERVED!"<< '\n';
+  } else {
+    double mean_scale_energy = (fin_scale_energy + init_scale_energy) / 2;
+    double err_energy = std::abs(fin_energy - init_energy);
+    double rel_err_energy = std::abs(err_energy / mean_scale_energy);
+    std::cout << "RELATIVE ERROR: " << rel_err_energy * 100;
+
+    if (rel_err_energy <= 0.01) {
+      std::cout << " -> ENERGY CONSERVED!" << "\n\n";
+    } else {
+      std::cout << " -> ENERGY NOT CONSERVED!" << "\n\n";
+    }
+  }
+
+  std::cout << "INITIAL AND FINAL MOMENTUMS: (" << init_momentum.x << "; "
+            << init_momentum.y << ") kg m/s, (" << fin_momentum.x << "; " << fin_momentum.y << ") kg m/s \n"; 
+            std::cout << "INITIAL AND FINAL SCALE MOMENTUMS: (" << init_scale_momentum.x << "; "
+            << init_scale_momentum.y << ") kg m/s, (" << fin_scale_momentum.x << "; " << fin_scale_momentum.y << ") kg m/s \n"; 
+  if (init_momentum == fin_momentum) {
+    std::cout << "MOMENTUM CONSERVED!" << '\n';
+  } else {
+    double mean_scale_momentum = (fin_scale_momentum.norm() + init_scale_momentum.norm()) / 2;
+    double err_momentum = std::abs(fin_momentum.norm() - init_momentum.norm());
+    double rel_err_momentum = err_momentum / mean_scale_momentum;
+    std::cout << "RELATIVE ERROR: " << rel_err_momentum * 100;
+
+    if (rel_err_momentum <= 0.01) {
+      std::cout << " -> MOMENTUM CONSERVED!" << "\n\n";
+    } else {
+      std::cout << " -> MOMENTUM NOT CONSERVED!" << "\n\n";
+    }
+  }
+
+  std::cout << "INITIAL AND FINAL ANGULAR MOMENTUMS: " << init_angular_momentum << ", "
+            << fin_angular_momentum << " kg m^2/s \n";
+  std::cout << "INITIAL AND FINAL SCALE ANGULAR MOMENTUMS: " << init_scale_angular_momentum << ", "
+            << fin_scale_angular_momentum << " kg m^2/s \n";
+  if (init_angular_momentum == fin_angular_momentum) {
+    std::cout << "ANGULAR MOMENTUM CONSERVED!" << '\n';
+  } else {
+    double mean_scale_angular_momentum = (fin_scale_angular_momentum + init_scale_angular_momentum) / 2;
+    double err_angular_momentum = (std::abs(fin_angular_momentum - init_angular_momentum));
+    double rel_err_angular_momentum = std::abs(err_angular_momentum / mean_scale_angular_momentum);
+    std::cout << "RELATIVE ERROR: " << rel_err_angular_momentum * 100;
+
+    if (rel_err_angular_momentum <= 0.01) {
+      std::cout << " -> ANGULAR MOMENTUM CONSERVED!" << '\n';
+    } else {
+      std::cout << " -> ANGULAR MOMENTUM NOT CONSERVED!" << '\n';
+    }
+  }
   std::cout << '\n';
 }

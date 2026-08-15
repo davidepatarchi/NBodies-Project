@@ -11,8 +11,7 @@ namespace nbodies {
 
 namespace constants {
 inline constexpr double G = 6.67e-11;
-inline constexpr double eps = 1e-12;
-inline constexpr double dt = 86400.;
+inline constexpr int dt = 60;
 inline constexpr long int AU = 149597870700;
 
 }  // namespace constants
@@ -61,11 +60,16 @@ class System {
   Planet& get_planet(size_t i);
   size_t size() const;
   void iteration();
-  void read_file(const std::string& filename);  // aggiunto il raggio
-  double energy();
-  vector momentum();
-  double angular_momentum();
   void collision();
+  void read_file(const std::string& filename);  
+
+  double energy();
+  double scale_energy();
+  vector momentum();
+  vector scale_momentum();
+  double angular_momentum();
+  double scale_angular_momentum();
+  
 };
 
 float AU_pixel_x(double x);

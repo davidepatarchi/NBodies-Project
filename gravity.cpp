@@ -83,10 +83,7 @@ void System::iteration() {
       if (j != i) {
         double new_acc =
             constants::G * planets[j].mass() *
-            pow((constants::eps * constants::eps) +
-                    pow((planets[j].position() - planets[i].position()).norm(),
-                        2),
-                -1.5);
+            pow((planets[j].position() - planets[i].position()).norm(), -3);
         somma =
             somma + (planets[i].position() - planets[j].position()) * new_acc;
       }
@@ -103,14 +100,9 @@ void System::iteration() {
 }
 void System::collision() {
   size_t N = planets.size();
-<<<<<<< HEAD
-  for (size_t i{0}; i < N; ++i) {
-    for (size_t j{0}; j < N; ++j) {
-=======
   size_t c = 0;
   for (size_t i{0}; i < N - c; ++i) {
     for (size_t j{0}; j < N - c; ++j) {
->>>>>>> 2684c40fecd4e8a8008b60101d6b79e1e9766ee0
       if (i != j) {
         if ((planets[i].position() - planets[j].position()).norm() <=
             planets[i].radius() + planets[j].radius()) {
@@ -138,12 +130,9 @@ void System::collision() {
           for (size_t k{0}; k < M; ++k) {
             if (k != M - 1) {
               double new_acc =
-                  constants::G * planets[k].mass() *
-                  pow((constants::eps * constants::eps) +
-                          pow((planets[k].position() - new_planet.position())
-                                  .norm(),
-                              2),
-                      -1.5);
+                  nbodies::constants::G * planets[k].mass() *
+                  pow((planets[k].position() - new_planet.position()).norm(),
+                      -3);
               somma = somma +
                       (new_planet.position() - planets[k].position()) * new_acc;
             }
@@ -183,10 +172,7 @@ void System::read_file(const std::string& filename) {
       if (j != i) {
         double new_acc =
             constants::G * planets[j].mass() *
-            pow((constants::eps * constants::eps) +
-                    pow((planets[j].position() - planets[i].position()).norm(),
-                        2),
-                -1.5);
+            pow((planets[j].position() - planets[i].position()).norm(), -3);
         somma =
             somma + (planets[i].position() - planets[j].position()) * new_acc;
       }
@@ -216,6 +202,27 @@ double System::energy() {
   return kinetic + potential;
 }
 
+double System::scale_energy() {
+  double kinetic = std::accumulate(
+      planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
+        return sum + 0.5 * body.mass() * pow(body.velocity().norm(), 2);
+      });
+
+  size_t N = planets.size();
+  double potential{0.0};
+  for (size_t i{0}; i < N; ++i) {
+    double tot = std::accumulate(
+        planets.begin(), planets.begin() + int(i), 0.0,
+        [&](double sum, Planet const& body) {
+          return sum + nbodies::constants::G *
+                           (planets[i].mass() * body.mass()) /
+                           (planets[i].position() - body.position()).norm();
+        });
+    potential += tot;
+  }
+  return kinetic + potential;
+}
+
 vector System::momentum() {
   vector momentum;
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
@@ -229,11 +236,32 @@ vector System::momentum() {
   return {momentum.x, momentum.y};
 }
 
+vector System::scale_momentum() {
+  vector momentum;
+  momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
+                               [](double sum, Planet const& body) {
+                                 return sum + std::abs(body.velocity().x * body.mass());
+                               });
+  momentum.y = std::accumulate(planets.begin(), planets.end(), 0.0,
+                               [](double sum, Planet const& body) {
+                                 return sum + std::abs(body.velocity().y * body.mass());
+                               });
+  return {momentum.x, momentum.y};
+}
+
 double System::angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + body.mass() * (body.position().x * body.velocity().y -
                                     body.position().y * body.velocity().x);
+      });
+}
+
+double System::scale_angular_momentum() {
+  return std::accumulate(
+      planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
+        return sum + std::abs(body.mass() * (body.position().x * body.velocity().y -
+                                    body.position().y * body.velocity().x));
       });
 }
 // END OF SYSTEM'S METHODS
@@ -257,45 +285,3 @@ float pixel_radius(double r) {
 
 }  // namespace nbodies
 
-/*void System::iteration() {
-  size_t N = planets.size();s
-
-  // evolving position
-  std::for_each(planets.begin(), planets.end(), [](Planet& body) {
-    body.position() =
-        body.position() + body.velocity() * nbodies::constants::dt +
-        body.acceleration() * 0.5 * pow(nbodies::constants::dt, 2);
-  });
-
-  // saving initial acceleration
-  std::vector<vector> init_acc;
-  init_acc.reserve(N);
-  std::transform(planets.begin(), planets.end(), std::back_inserter(init_acc),
-                 [](Planet const& body) { return body.acceleration(); });
-
-  // evolving acceleration
-  for (size_t i{0}; i < N; ++i) {
-    vector somma{0., 0.};
-
-    for (size_t j{0}; j < N; ++j) {
-      if (j != i) {
-        double new_acc =
-            constants::G * planets[j].mass() *
-            pow((constants::eps * constants::eps) +
-                    pow((planets[j].position() - planets[i].position()).norm(),
-                        2),
-                -1.5);
-        somma =
-            somma + (planets[i].position() - planets[j].position()) * new_acc;
-      }
-    }
-    planets[i].acceleration() = somma * (-1);
-  }
-
-  // evolving velocity
-  for (size_t i{0}; i < N; ++i) {
-    planets[i].velocity() =
-        planets[i].velocity() + (planets[i].acceleration() + init_acc[i]) *
-                                    (0.5 * nbodies::constants::dt);
-  }
-}*/
