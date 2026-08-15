@@ -103,11 +103,13 @@ void System::iteration() {
 }
 void System::urti() {
   size_t N = planets.size();
-  for (size_t i{0}; i < N; ++i)  {
-    for (size_t j{0}; j < N; ++j) {
+  size_t c = 0;
+  for (size_t i{0}; i < N - c; ++i) {
+    for (size_t j{0}; j < N - c; ++j) {
       if (i != j) {
         if ((planets[i].position() - planets[j].position()).norm() <=
             planets[i].radius() + planets[j].radius()) {
+          c += 2;
           vector new_position = (planets[i].position() * planets[i].mass() +
                                  planets[j].position() * planets[j].mass()) *
                                 pow(planets[i].mass() + planets[j].mass(), -1);

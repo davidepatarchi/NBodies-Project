@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("collision1.txt");
+  planets.read_file("collision2.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
