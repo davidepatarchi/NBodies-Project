@@ -16,7 +16,11 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
+<<<<<<< HEAD
   planets.read_file("figure8.txt");
+=======
+  planets.read_file("collision2.txt");
+>>>>>>> 2684c40fecd4e8a8008b60101d6b79e1e9766ee0
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;

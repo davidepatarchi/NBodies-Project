@@ -103,11 +103,18 @@ void System::iteration() {
 }
 void System::collision() {
   size_t N = planets.size();
+<<<<<<< HEAD
   for (size_t i{0}; i < N; ++i) {
     for (size_t j{0}; j < N; ++j) {
+=======
+  size_t c = 0;
+  for (size_t i{0}; i < N - c; ++i) {
+    for (size_t j{0}; j < N - c; ++j) {
+>>>>>>> 2684c40fecd4e8a8008b60101d6b79e1e9766ee0
       if (i != j) {
         if ((planets[i].position() - planets[j].position()).norm() <=
             planets[i].radius() + planets[j].radius()) {
+          c += 2;
           vector new_position = (planets[i].position() * planets[i].mass() +
                                  planets[j].position() * planets[j].mass()) *
                                 pow(planets[i].mass() + planets[j].mass(), -1);
