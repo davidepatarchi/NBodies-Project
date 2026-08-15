@@ -65,11 +65,12 @@ class System {
   double energy();
   vector momentum();
   double angular_momentum();
-  void urti();
+  void collision();
 };
 
 float AU_pixel_x(double x);
 float AU_pixel_y(double y);
+float pixel_radius(double r);
 
 }  // namespace nbodies
 

@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("collision1.txt");
+  planets.read_file("figure8.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -41,7 +41,7 @@ int main() {
 
     if (t <= T) {
       planets.iteration();
-      planets.urti();
+      planets.collision();
     }
 
     // SETTING FIGURES AND COLORS
@@ -60,7 +60,7 @@ int main() {
       float y_pixel = nbodies::AU_pixel_y(planets.get_planet(i).position().y);
 
       // CREATING A CIRCLE
-      sf::CircleShape planet_shape(5.f);  // 5 PIXELS RADIUS
+      sf::CircleShape planet_shape(float(nbodies::pixel_radius(planets.get_planet(i).radius())));  // 5 PIXELS RADIUS
       planet_shape.setFillColor(palette[i % palette.size()]);
       planet_shape.setOrigin(5.f, 5.f);
 

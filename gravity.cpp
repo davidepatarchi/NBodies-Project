@@ -101,9 +101,9 @@ void System::iteration() {
                                     (0.5 * nbodies::constants::dt);
   }
 }
-void System::urti() {
+void System::collision() {
   size_t N = planets.size();
-  for (size_t i{0}; i < N; ++i)  {
+  for (size_t i{0}; i < N; ++i) {
     for (size_t j{0}; j < N; ++j) {
       if (i != j) {
         if ((planets[i].position() - planets[j].position()).norm() <=
@@ -119,11 +119,13 @@ void System::urti() {
           double new_mass = planets[i].mass() + planets[j].mass();
           double new_radius =
               sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+
           planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
           planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j - 1));
           Planet new_planet{new_mass, new_position, new_velocity,
                             new_acceleration, new_radius};
           planets.push_back(new_planet);
+
           size_t M = planets.size();
           vector somma{0., 0.};
           for (size_t k{0}; k < M; ++k) {
@@ -236,12 +238,20 @@ float AU_pixel_x(double x) {
 float AU_pixel_y(double y) {
   return float((1 - (y / nbodies::constants::AU) * 0.9) * 400.);
 }
+float pixel_radius(double r) {
+  double exp = int(std::log10(r));
+  double base = r / pow(10, exp);
+  if (base < 5) {
+    return float(exp);
+  }
+  return float(exp + 1);
+}
 // END OF SFML FUNCTIONS
 
 }  // namespace nbodies
 
 /*void System::iteration() {
-  size_t N = planets.size();
+  size_t N = planets.size();s
 
   // evolving position
   std::for_each(planets.begin(), planets.end(), [](Planet& body) {
