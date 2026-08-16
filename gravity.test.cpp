@@ -129,3 +129,57 @@ TEST_CASE("Testing: non-const getter functions") {
   CHECK(body.acceleration().x == 60.);
 }
 // END OF PLANET'S TESTS
+
+// SYSTEM TESTS
+TEST_CASE("Testing: read_file(), size() and get_planet()") {
+  nbodies::System planets1;
+  planets1.read_file("test1.txt");
+
+  // checking system's size
+  CHECK(planets1.size() == 2);
+
+  // checking the second planet
+  nbodies::Planet body = planets1.get_planet(1);
+  CHECK(body.mass() == 1.2);
+  CHECK(body.position().x == 2.2);
+  CHECK(body.position().y == 3.2);
+  CHECK(body.velocity().x == 4.2);
+  CHECK(body.velocity().y == 5.2);
+  CHECK(body.radius() == 6.2);
+
+  // checking second planet's accelerations
+  CHECK(body.acceleration().x == doctest::Approx(7.337e-9));
+  CHECK(body.acceleration().y == doctest::Approx(7.337e-9));
+
+  // checking not-existing file
+  nbodies::System planets2;
+  CHECK_THROWS(planets2.read_file("fake_file.txt"));
+}
+
+TEST_CASE("Testing: iteration()") {
+  // single planet's system
+  nbodies::System planets1;
+  planets1.read_file("test2.txt");
+  planets1.iteration();
+  nbodies::Planet body = planets1.get_planet(0);
+
+  CHECK(body.position().x == doctest::Approx(120.));
+  CHECK(body.position().y == 0.);
+  CHECK(body.velocity().x == 2.);
+  CHECK(body.velocity().y == 0.);
+  CHECK(body.acceleration().x == 0.);
+  CHECK(body.acceleration().y == 0.);
+
+  // two planet's system
+  nbodies::System planets2;
+  planets2.read_file("test3.txt");
+  planets2.iteration();
+  nbodies::Planet body = planets2.get_planet(0);
+
+  CHECK(body.position().x == doctest::Approx(6.9985));
+  CHECK(body.position().y == 0.);
+  CHECK(body.velocity().x == doctest::Approx(-50025.1));
+  CHECK(body.velocity().y == 0.);
+  CHECK(body.acceleration().x == doctest::Approx(-3.405e-3));
+  CHECK(body.acceleration().y == 0.);
+}

@@ -62,7 +62,6 @@ class System {
   void iteration();
   void collision();
   void read_file(const std::string& filename);
-
   double energy();
   double scale_energy();
   vector momentum();
