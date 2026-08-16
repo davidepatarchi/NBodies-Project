@@ -21,22 +21,22 @@ struct vector {
   double y;
 
   vector operator+(vector const& z) const;
+  vector operator-(vector const& z) const;
   vector operator*(double a) const;
   // vedi se fare il prodotto simmetrico(overload di operatore fuori da vector)
-  vector operator-(vector const& z) const;
   bool operator==(vector const& z) const;
   double norm() const;
 };
 
 class Planet {
  private:
-  double m_{0.};       // mass
-  vector r_{0., 0.};   // position
-  vector v_{0., 0.};   // velocity
-  vector a_{0., 0.};   // acceleration
-  double radius_{0.};  // raggio per collisioni
-  bool check_m_validity() const;
-  bool check_radius() const;  // invariante di classe raggio
+  double mass_{0.};
+  vector position_{0., 0.};
+  vector velocity_{0., 0.};
+  vector acceleration_{0., 0.};
+  double radius_{0.};
+  void check_mass() const;
+  void check_radius() const;
 
  public:
   Planet(double m, vector const& r, vector const& v, vector const& a,
@@ -61,7 +61,7 @@ class System {
   size_t size() const;
   void iteration();
   void collision();
-  void read_file(const std::string& filename);  
+  void read_file(const std::string& filename);
 
   double energy();
   double scale_energy();
@@ -69,7 +69,6 @@ class System {
   vector scale_momentum();
   double angular_momentum();
   double scale_angular_momentum();
-  
 };
 
 float AU_pixel_x(double x);

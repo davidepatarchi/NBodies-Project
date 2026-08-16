@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("collision2.txt");
+  planets.read_file("collision1.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -113,7 +113,7 @@ int main() {
             std::cout << "INITIAL AND FINAL SCALE MOMENTUMS: (" << init_scale_momentum.x << "; "
             << init_scale_momentum.y << ") kg m/s, (" << fin_scale_momentum.x << "; " << fin_scale_momentum.y << ") kg m/s \n"; 
   if (init_momentum == fin_momentum) {
-    std::cout << "MOMENTUM CONSERVED!" << '\n';
+    std::cout << "MOMENTUM CONSERVED!" << "\n\n";
   } else {
     double mean_scale_momentum = (fin_scale_momentum.norm() + init_scale_momentum.norm()) / 2;
     double err_momentum = std::abs(fin_momentum.norm() - init_momentum.norm());

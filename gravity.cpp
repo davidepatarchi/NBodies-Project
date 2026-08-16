@@ -12,47 +12,53 @@ bool vector::operator==(vector const& z)
     const {  // da capire se ha senso o se nei test farli separati x e y
   return x == z.x && y == z.y;
 }
-
 double vector::norm() const { return sqrt(x * x + y * y); }
-
 // END OF VECTOR'S METHODS
 
 // PLANET'S METHODS
-Planet::Planet(double m, vector const& r, vector const& v, vector const& a,
-               double radius) {
-  m_ = m;
-  r_.x = r.x;
-  r_.y = r.y;
-  v_.x = v.x;
-  v_.y = v.y;
-  a_.x = a.x;
-  a_.y = a.y;
-  radius_ = radius;
+void Planet::check_mass() const {
+  if (mass_ <= 0) {
+    throw std::runtime_error("ERROR: Invalid mass!");
+  }
 }
-bool Planet::check_m_validity() const { return m_ >= 0. ? true : false; }
-bool Planet::check_radius() const { return radius_ >= 0. ? true : false; }
+void Planet::check_radius() const {
+  if (radius_ <= 0) {
+    throw std::runtime_error("ERROR: Invalid radius!");
+  }
+}
+
+Planet::Planet(double mass, vector const& position, vector const& velocity,
+               vector const& acceleration, double radius) {
+  mass_ = mass;
+  position_.x = position.x;
+  position_.y = position.y;
+  velocity_.x = velocity.x;
+  velocity_.y = velocity.y;
+  acceleration_.x = acceleration.x;
+  acceleration_.y = acceleration.y;
+  radius_ = radius;
+
+  check_mass();
+  check_radius();
+}
 
 double Planet::mass() const {
-  if (check_m_validity() == true) {
-    return m_;
-  }
-  throw std::runtime_error("ERROR: Invalid mass!");
+  check_mass();
+  return mass_;
 }
 double Planet::radius() const {
-  if (check_radius() == true) {
-    return radius_;
-  }
-  throw std::runtime_error("ERROR: Invalid radius!");
+  check_radius();
+  return radius_;
 }
 // non-costant version
-vector& Planet::position() { return r_; }
-vector& Planet::velocity() { return v_; }
-vector& Planet::acceleration() { return a_; }
+vector& Planet::position() { return position_; }
+vector& Planet::velocity() { return velocity_; }
+vector& Planet::acceleration() { return acceleration_; }
 
 // costant version
-vector const& Planet::position() const { return r_; }
-vector const& Planet::velocity() const { return v_; }
-vector const& Planet::acceleration() const { return a_; }
+vector const& Planet::position() const { return position_; }
+vector const& Planet::velocity() const { return velocity_; }
+vector const& Planet::acceleration() const { return acceleration_; }
 // END OF PLANET'S METHODS
 
 // SYSTEM'S METHODS
@@ -238,14 +244,14 @@ vector System::momentum() {
 
 vector System::scale_momentum() {
   vector momentum;
-  momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
-                               [](double sum, Planet const& body) {
-                                 return sum + std::abs(body.velocity().x * body.mass());
-                               });
-  momentum.y = std::accumulate(planets.begin(), planets.end(), 0.0,
-                               [](double sum, Planet const& body) {
-                                 return sum + std::abs(body.velocity().y * body.mass());
-                               });
+  momentum.x = std::accumulate(
+      planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
+        return sum + std::abs(body.velocity().x * body.mass());
+      });
+  momentum.y = std::accumulate(
+      planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
+        return sum + std::abs(body.velocity().y * body.mass());
+      });
   return {momentum.x, momentum.y};
 }
 
@@ -260,8 +266,9 @@ double System::angular_momentum() {
 double System::scale_angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
-        return sum + std::abs(body.mass() * (body.position().x * body.velocity().y -
-                                    body.position().y * body.velocity().x));
+        return sum +
+               std::abs(body.mass() * (body.position().x * body.velocity().y -
+                                       body.position().y * body.velocity().x));
       });
 }
 // END OF SYSTEM'S METHODS
@@ -284,4 +291,3 @@ float pixel_radius(double r) {
 // END OF SFML FUNCTIONS
 
 }  // namespace nbodies
-
