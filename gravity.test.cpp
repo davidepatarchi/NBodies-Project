@@ -183,6 +183,42 @@ TEST_CASE("Testing: iteration()") {
   CHECK(body2.acceleration().x == doctest::Approx(-3.405e-3).epsilon(1e-4));
   CHECK(body2.acceleration().y == 0.);
 }
+TEST_CASE("Testing: collision()") {
+  // two planet collision
+  nbodies::System planets1;
+  planets1.read_file("data/test7.txt");
+  planets1.collision();
+  nbodies::Planet body1 = planets1.get_planet(0);
+  CHECK(planets1.size() == 1);
+  CHECK(body1.mass() == 8.e24);
+  CHECK(body1.position().x == doctest::Approx(-1.e6));
+  CHECK(body1.position().y == 0.);
+  CHECK(body1.velocity().x == doctest::Approx(4375.));
+  CHECK(body1.velocity().y == doctest::Approx(3000.0));
+  CHECK(body1.radius() == doctest::Approx(7.211e6));
+
+  // three planets' system
+  nbodies::System planets2;
+  planets2.read_file("data/test8.txt");
+  planets2.collision();
+  nbodies::Planet bodyid = planets2.get_planet(0);
+  nbodies::Planet body2 = planets2.get_planet(1);
+  CHECK(planets2.size() == 2.);
+  CHECK(bodyid.mass() == 2.e27);
+  CHECK(bodyid.position().x == 1.0e11);
+  CHECK(bodyid.position().y == 1.0e11);
+  CHECK(bodyid.velocity().x == 0.0);
+  CHECK(bodyid.velocity().y == -13000.0);
+  CHECK(bodyid.radius() == 7.0e7);
+  CHECK(body2.mass() == 8.e24);
+  CHECK(body2.position().x == doctest::Approx(-1.e6));
+  CHECK(body2.position().y == 0.);
+  CHECK(body2.velocity().x == doctest::Approx(4375.));
+  CHECK(body2.velocity().y == doctest::Approx(3000.0));
+  CHECK(body2.radius() == doctest::Approx(7.211e6));
+  //three planets' system, no collision
+  
+}
 
 // MANCA IL TEST DI COLLISION
 
