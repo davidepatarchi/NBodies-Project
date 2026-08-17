@@ -35,7 +35,7 @@ TEST_CASE("Testing: operator-") {
   // subtracting a positive vector
   nbodies::vector vsum1 = v1 - v2;
   CHECK(vsum1.x == -2.);
-  CHECK(vsum1.y = -2.);
+  CHECK(vsum1.y == -2.);
 
   // subtracting a null vector
   nbodies::vector vsum2 = v1 - v3;
@@ -53,18 +53,18 @@ TEST_CASE("Testing: operator*") {
 
   // multiplying by a positive number
   nbodies::vector vprod1 = v * 2;
-  CHECK(vprod1.x = 2.);
-  CHECK(vprod1.y = 4.);
+  CHECK(vprod1.x == 2.);
+  CHECK(vprod1.y == 4.);
 
   // multiplying by 0
   nbodies::vector vprod2 = v * 0;
-  CHECK(vprod2.x = 0.);
-  CHECK(vprod2.y = 0.);
+  CHECK(vprod2.x == 0.);
+  CHECK(vprod2.y == 0.);
 
   // multiplying by a negative number
   nbodies::vector vprod3 = v * (-2);
-  CHECK(vprod3.x = -2.);
-  CHECK(vprod3.y = -4.);
+  CHECK(vprod3.x == -2.);
+  CHECK(vprod3.y == -4.);
 }
 
 TEST_CASE("Testing: operator==") {
@@ -130,10 +130,10 @@ TEST_CASE("Testing: non-const getter functions") {
 }
 // END OF PLANET'S TESTS
 
-// SYSTEM TESTS
+// SYSTEM'S TESTS
 TEST_CASE("Testing: read_file(), size() and get_planet()") {
   nbodies::System planets1;
-  planets1.read_file("test1.txt");
+  planets1.read_file("data/test1.txt");
 
   // checking system's size
   CHECK(planets1.size() == 2);
@@ -159,27 +159,94 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
 TEST_CASE("Testing: iteration()") {
   // single planet's system
   nbodies::System planets1;
-  planets1.read_file("test2.txt");
+  planets1.read_file("data/test2.txt");
   planets1.iteration();
-  nbodies::Planet body = planets1.get_planet(0);
+  nbodies::Planet body1 = planets1.get_planet(0);
 
-  CHECK(body.position().x == doctest::Approx(120.));
-  CHECK(body.position().y == 0.);
-  CHECK(body.velocity().x == 2.);
-  CHECK(body.velocity().y == 0.);
-  CHECK(body.acceleration().x == 0.);
-  CHECK(body.acceleration().y == 0.);
+  CHECK(body1.position().x == doctest::Approx(120.));
+  CHECK(body1.position().y == 0.);
+  CHECK(body1.velocity().x == 2.);
+  CHECK(body1.velocity().y == 0.);
+  CHECK(body1.acceleration().x == 0.);
+  CHECK(body1.acceleration().y == 0.);
 
-  // two planet's system
+  // two planets' system
   nbodies::System planets2;
-  planets2.read_file("test3.txt");
+  planets2.read_file("data/test3.txt");
   planets2.iteration();
-  nbodies::Planet body = planets2.get_planet(0);
+  nbodies::Planet body2 = planets2.get_planet(0);
 
-  CHECK(body.position().x == doctest::Approx(6.9985));
-  CHECK(body.position().y == 0.);
-  CHECK(body.velocity().x == doctest::Approx(-50025.1));
-  CHECK(body.velocity().y == 0.);
-  CHECK(body.acceleration().x == doctest::Approx(-3.405e-3));
-  CHECK(body.acceleration().y == 0.);
+  CHECK(body2.position().x == doctest::Approx(6.9967).epsilon(1e-4));
+  CHECK(body2.position().y == 0.);
+  CHECK(body2.velocity().x == doctest::Approx(-0.15232).epsilon(1e-4));
+  CHECK(body2.velocity().y == 0.);
+  CHECK(body2.acceleration().x == doctest::Approx(-3.405e-3).epsilon(1e-4));
+  CHECK(body2.acceleration().y == 0.);
 }
+
+// MANCA IL TEST DI COLLISION
+
+TEST_CASE("Testing: energy() and scale_energy()") {
+  // single planet's system
+  nbodies::System planets1;
+  planets1.read_file("data/test2.txt");
+  CHECK(planets1.energy() == 2.);
+  CHECK(planets1.scale_energy() == 2.);
+
+  // two planets' system
+  nbodies::System planets2;
+  planets2.read_file("data/test4.txt");
+  CHECK(planets2.energy() == doctest::Approx(249.96665).epsilon(1e-4));
+  CHECK(planets2.scale_energy() == doctest::Approx(250.03335).epsilon(1e-4));
+}
+
+TEST_CASE("Testing: momentum() and scale_momentum()") {
+  // single planet's system
+  nbodies::System planets1;
+  planets1.read_file("data/test2.txt");
+  CHECK(planets1.momentum() == nbodies::vector{2., 0.});
+  CHECK(planets1.scale_momentum() == nbodies::vector{2., 0.});
+
+  // two planets' system
+  nbodies::System planets2;
+  planets2.read_file("data/test4.txt");
+  CHECK(planets2.momentum() == nbodies::vector{0., 0.});
+  CHECK(planets2.scale_momentum() == nbodies::vector{10000., 0.});
+}
+
+TEST_CASE("Testing: angular_momentum() and scale_angular_momentum()") {
+  // single planet's system
+  nbodies::System planets1;
+  planets1.read_file("data/test5.txt");
+  CHECK(planets1.angular_momentum() == -25.);
+  CHECK(planets1.scale_angular_momentum() == 25.);
+
+  // two planets' system
+  nbodies::System planets2;
+  planets2.read_file("data/test6.txt");
+  CHECK(planets2.angular_momentum() == 0.);
+  CHECK(planets2.scale_angular_momentum() == 60.);
+}
+// END OF SYSTEM'S TESTS
+
+// SFML FUNCTIONS' TESTS
+TEST_CASE("Testing: AU_pixel_x() and AU_pixel_y()") {
+  double x1{0.};
+  double x2{nbodies::constants::AU};
+  double y1{0.};
+  double y2{nbodies::constants::AU};
+
+  CHECK(nbodies::AU_pixel_x(x1) == 400.f);
+  CHECK(nbodies::AU_pixel_x(x2) == 760.f);
+  CHECK(nbodies::AU_pixel_y(y1) == 400.f);
+  CHECK(nbodies::AU_pixel_y(y2) == 40.f);
+}
+
+TEST_CASE("Testing: pixel_radius()") {
+  double r1{4.9e5};
+  double r2{5.e5};
+
+  CHECK(nbodies::pixel_radius(r1) == 5.f);
+  CHECK(nbodies::pixel_radius(r2) == 6.f);
+}
+// END OF SFML FUNCTIONS' TESTS

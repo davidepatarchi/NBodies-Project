@@ -104,6 +104,7 @@ void System::iteration() {
                                     (0.5 * nbodies::constants::dt);
   }
 }
+
 void System::collision() {
   size_t N = planets.size();
   size_t c = 0;

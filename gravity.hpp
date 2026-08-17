@@ -10,7 +10,7 @@
 namespace nbodies {
 
 namespace constants {
-inline constexpr double G = 6.67e-11;
+inline constexpr double G = 6.6743e-11;
 inline constexpr int dt = 60;
 inline constexpr long int AU = 149597870700;
 

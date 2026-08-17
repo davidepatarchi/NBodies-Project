@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("collision1.txt");
+  planets.read_file("data/collision1.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -89,9 +89,9 @@ int main() {
   double fin_scale_angular_momentum{planets.scale_angular_momentum()};
 
   std::cout << '\n';
-  std::cout << "INITIAL AND FINAL ENERGIES: " << init_energy << ", "
+  std::cout << "INITIAL AND FINAL ENERGIES: " << init_energy << " J, "
             << fin_energy << " J \n";
-  std::cout << "INITIAL AND FINAL SCALE ENERGIES: " << init_scale_energy << ", "
+  std::cout << "INITIAL AND FINAL SCALE ENERGIES: " << init_scale_energy << " J, "
             << fin_scale_energy << " J \n";
   if (init_energy == fin_energy) {
     std::cout << "ENERGY CONSERVED!"<< '\n';
@@ -127,9 +127,9 @@ int main() {
     }
   }
 
-  std::cout << "INITIAL AND FINAL ANGULAR MOMENTUMS: " << init_angular_momentum << ", "
+  std::cout << "INITIAL AND FINAL ANGULAR MOMENTUMS: " << init_angular_momentum << " kg m^2/s, "
             << fin_angular_momentum << " kg m^2/s \n";
-  std::cout << "INITIAL AND FINAL SCALE ANGULAR MOMENTUMS: " << init_scale_angular_momentum << ", "
+  std::cout << "INITIAL AND FINAL SCALE ANGULAR MOMENTUMS: " << init_scale_angular_momentum << " kg m^2/s, "
             << fin_scale_angular_momentum << " kg m^2/s \n";
   if (init_angular_momentum == fin_angular_momentum) {
     std::cout << "ANGULAR MOMENTUM CONSERVED!" << '\n';
