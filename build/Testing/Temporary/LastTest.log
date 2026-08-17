@@ -1,0 +1,24 @@
+Start testing: Aug 17 18:46 CEST
+----------------------------------------------------------
+1/1 Testing: progetto.t
+1/1 Test: progetto.t
+Command: "/home/davidepatarchi/programmazione_fisica/pf_progetto/NBodies-Project/build/Release/progetto.t"
+Directory: /home/davidepatarchi/programmazione_fisica/pf_progetto/NBodies-Project/build
+"progetto.t" start time: Aug 17 18:46 CEST
+Output:
+----------------------------------------------------------
+[doctest] doctest version is "2.5.0"
+[doctest] run with "--help" for options
+===============================================================================
+[doctest] test cases: 16 | 16 passed | 0 failed | 0 skipped
+[doctest] assertions: 97 | 97 passed | 0 failed |
+[doctest] Status: SUCCESS!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"progetto.t" end time: Aug 17 18:46 CEST
+"progetto.t" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Aug 17 18:46 CEST
