@@ -106,47 +106,46 @@ void System::iteration() {
 }
 
 void System::collision() {
-  size_t N = planets.size();
-  size_t c = 0;
-  for (size_t i{0}; i < N - c; ++i) {
-    for (size_t j{0}; j < N - c; ++j) {
-      if (i != j) {
-        if ((planets[i].position() - planets[j].position()).norm() <=
-            planets[i].radius() + planets[j].radius()) {
-          c += 2;
-          vector new_position = (planets[i].position() * planets[i].mass() +
-                                 planets[j].position() * planets[j].mass()) *
-                                pow(planets[i].mass() + planets[j].mass(), -1);
-          vector new_velocity = (planets[i].velocity() * planets[i].mass() +
-                                 planets[j].velocity() * planets[j].mass()) *
-                                pow(planets[i].mass() + planets[j].mass(), -1);
-          vector new_acceleration{0., 0.};
+  for (size_t i{0}; i < planets.size();) {
+    size_t dimensione_iniziale = planets.size();
+    for (size_t j = i + 1; j < planets.size(); ++j) {
+      if ((planets[i].position() - planets[j].position()).norm() <=
+          planets[i].radius() + planets[j].radius()) {
+        vector new_position = (planets[i].position() * planets[i].mass() +
+                               planets[j].position() * planets[j].mass()) *
+                              pow(planets[i].mass() + planets[j].mass(), -1);
+        vector new_velocity = (planets[i].velocity() * planets[i].mass() +
+                               planets[j].velocity() * planets[j].mass()) *
+                              pow(planets[i].mass() + planets[j].mass(), -1);
+        vector new_acceleration{0., 0.};
 
-          double new_mass = planets[i].mass() + planets[j].mass();
-          double new_radius =
-              sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+        double new_mass = planets[i].mass() + planets[j].mass();
+        double new_radius =
+            sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+        planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j));
+        planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
 
-          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
-          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j - 1));
-          Planet new_planet{new_mass, new_position, new_velocity,
-                            new_acceleration, new_radius};
-          planets.push_back(new_planet);
+        Planet new_planet{new_mass, new_position, new_velocity,
+                          new_acceleration, new_radius};
 
-          size_t M = planets.size();
-          vector somma{0., 0.};
-          for (size_t k{0}; k < M; ++k) {
-            if (k != M - 1) {
-              double new_acc =
-                  nbodies::constants::G * planets[k].mass() *
-                  pow((planets[k].position() - new_planet.position()).norm(),
-                      -3);
-              somma = somma +
-                      (new_planet.position() - planets[k].position()) * new_acc;
-            }
-          }
-          new_planet.acceleration() = somma * (-1);
+        size_t M = planets.size();
+        vector somma{0., 0.};
+        for (size_t k{0}; k < M; ++k) {
+          double new_acc =
+              nbodies::constants::G * planets[k].mass() *
+              pow((planets[k].position() - new_planet.position()).norm(), -3);
+          somma =
+              somma + (new_planet.position() - planets[k].position()) * new_acc;
         }
+        new_planet.acceleration() = somma * (-1);
+        planets.push_back(new_planet);
+        break;
       }
+    }
+    if (planets.size() < dimensione_iniziale) {
+      i = 0;
+    } else {
+      ++i;
     }
   }
 }
@@ -292,3 +291,49 @@ float pixel_radius(double r) {
 // END OF SFML FUNCTIONS
 
 }  // namespace nbodies
+/*
+void System::collision() {
+  size_t N = planets.size();
+  size_t c = 0;
+  for (size_t i{0}; i < N - c; ++i) {
+    for (size_t j{0}; j < N - c; ++j) {
+      if (i != j) {
+        if ((planets[i].position() - planets[j].position()).norm() <=
+            planets[i].radius() + planets[j].radius()) {
+          c += 2;
+          vector new_position = (planets[i].position() * planets[i].mass() +
+                                 planets[j].position() * planets[j].mass()) *
+                                pow(planets[i].mass() + planets[j].mass(), -1);
+          vector new_velocity = (planets[i].velocity() * planets[i].mass() +
+                                 planets[j].velocity() * planets[j].mass()) *
+                                pow(planets[i].mass() + planets[j].mass(), -1);
+          vector new_acceleration{0., 0.};
+
+          double new_mass = planets[i].mass() + planets[j].mass();
+          double new_radius =
+              sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+
+          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
+          planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j - 1));
+          Planet new_planet{new_mass, new_position, new_velocity,
+                            new_acceleration, new_radius};
+          planets.push_back(new_planet);
+
+          size_t M = planets.size();
+          vector somma{0., 0.};
+          for (size_t k{0}; k < M; ++k) {
+            if (k != M - 1) {
+              double new_acc =
+                  nbodies::constants::G * planets[k].mass() *
+                  pow((planets[k].position() - new_planet.position()).norm(),
+                      -3);
+              somma = somma +
+                      (new_planet.position() - planets[k].position()) * new_acc;
+            }
+          }
+          new_planet.acceleration() = somma * (-1);
+        }
+      }
+    }
+  }
+}*/

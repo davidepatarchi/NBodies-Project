@@ -16,7 +16,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/spins.txt");
+  planets.read_file("data/asteroids.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
