@@ -133,7 +133,7 @@ TEST_CASE("Testing: non-const getter functions") {
 // SYSTEM'S TESTS
 TEST_CASE("Testing: read_file(), size() and get_planet()") {
   nbodies::System planets1;
-  planets1.read_file("data/test1.txt");
+  planets1.read_file("data_test/test1.txt");
 
   // checking system's size
   CHECK(planets1.size() == 2);
@@ -159,7 +159,7 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
 TEST_CASE("Testing: iteration()") {
   // single planet's system
   nbodies::System planets1;
-  planets1.read_file("data/test2.txt");
+  planets1.read_file("data_test/test2.txt");
   planets1.iteration();
   nbodies::Planet body1 = planets1.get_planet(0);
 
@@ -172,7 +172,7 @@ TEST_CASE("Testing: iteration()") {
 
   // two planets' system
   nbodies::System planets2;
-  planets2.read_file("data/test3.txt");
+  planets2.read_file("data_test/test3.txt");
   planets2.iteration();
   nbodies::Planet body2 = planets2.get_planet(0);
 
@@ -186,7 +186,7 @@ TEST_CASE("Testing: iteration()") {
 TEST_CASE("Testing: collision()") {
   // two planet collision
   nbodies::System planets1;
-  planets1.read_file("data/test7.txt");
+  planets1.read_file("data_test/test7.txt");
   planets1.collision();
   nbodies::Planet body1 = planets1.get_planet(0);
   CHECK(planets1.size() == 1);
@@ -199,7 +199,7 @@ TEST_CASE("Testing: collision()") {
 
   // three planets' system
   nbodies::System planets2;
-  planets2.read_file("data/test8.txt");
+  planets2.read_file("data_test/test8.txt");
   planets2.collision();
   nbodies::Planet bodyid = planets2.get_planet(0);
   nbodies::Planet body2 = planets2.get_planet(1);
@@ -223,13 +223,13 @@ TEST_CASE("Testing: collision()") {
 TEST_CASE("Testing: energy() and scale_energy()") {
   // single planet's system
   nbodies::System planets1;
-  planets1.read_file("data/test2.txt");
+  planets1.read_file("data_test/test2.txt");
   CHECK(planets1.energy() == 2.);
   CHECK(planets1.scale_energy() == 2.);
 
   // two planets' system
   nbodies::System planets2;
-  planets2.read_file("data/test4.txt");
+  planets2.read_file("data_test/test4.txt");
   CHECK(planets2.energy() == doctest::Approx(249.96665).epsilon(1e-4));
   CHECK(planets2.scale_energy() == doctest::Approx(250.03335).epsilon(1e-4));
 }
@@ -237,13 +237,13 @@ TEST_CASE("Testing: energy() and scale_energy()") {
 TEST_CASE("Testing: momentum() and scale_momentum()") {
   // single planet's system
   nbodies::System planets1;
-  planets1.read_file("data/test2.txt");
+  planets1.read_file("data_test/test2.txt");
   CHECK(planets1.momentum() == nbodies::vector{2., 0.});
   CHECK(planets1.scale_momentum() == nbodies::vector{2., 0.});
 
   // two planets' system
   nbodies::System planets2;
-  planets2.read_file("data/test4.txt");
+  planets2.read_file("data_test/test4.txt");
   CHECK(planets2.momentum() == nbodies::vector{0., 0.});
   CHECK(planets2.scale_momentum() == nbodies::vector{10000., 0.});
 }
@@ -251,13 +251,13 @@ TEST_CASE("Testing: momentum() and scale_momentum()") {
 TEST_CASE("Testing: angular_momentum() and scale_angular_momentum()") {
   // single planet's system
   nbodies::System planets1;
-  planets1.read_file("data/test5.txt");
+  planets1.read_file("data_test/test5.txt");
   CHECK(planets1.angular_momentum() == -25.);
   CHECK(planets1.scale_angular_momentum() == 25.);
 
   // two planets' system
   nbodies::System planets2;
-  planets2.read_file("data/test6.txt");
+  planets2.read_file("data_test/test6.txt");
   CHECK(planets2.angular_momentum() == 0.);
   CHECK(planets2.scale_angular_momentum() == 60.);
 }

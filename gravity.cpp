@@ -1,5 +1,5 @@
 #include "gravity.hpp"
-
+#include <algorithm>
 #include <numeric>
 
 namespace nbodies {

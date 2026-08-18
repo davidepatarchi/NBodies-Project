@@ -1,6 +1,5 @@
 #ifndef NBODIES_GRAVITY_HPP
 #define NBODIES_GRAVITY_HPP
-#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -13,6 +12,7 @@ namespace constants {
 inline constexpr double G = 6.6743e-11;
 inline constexpr int dt = 60;
 inline constexpr long int AU = 149597870700;
+inline constexpr double k = 1.e-8;
 
 }  // namespace constants
 

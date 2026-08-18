@@ -1,3 +1,5 @@
+#include <SFML/Graphics.hpp>
+#include <cstdio>
 #include <iostream>
 
 #include "gravity.hpp"
@@ -16,13 +18,29 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/solarsystem.txt");
+  planets.read_file("data/dwarfdance.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
   const int HEIGHT = 800;
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
+
+  sf::Font font;
+  if (!font.loadFromFile("fonts/DejaVuSerif-Bold.ttf")) {
+    throw std::runtime_error("ERROR: Font not found!");
+  }
+
+  sf::RectangleShape info_panel;
+  info_panel.setSize(sf::Vector2f(280.f, 140.f));
+ info_panel.setPosition(WIDTH - 320.f, 10.f);
+  info_panel.setFillColor(sf::Color::Transparent);
+
+  sf::Text info_text;
+  info_text.setFont(font);
+  info_text.setCharacterSize(16);
+  info_text.setFillColor(sf::Color::White);
+  info_text.setPosition(WIDTH - 310.f, 20.f);
 
   double init_energy{planets.energy()};
   nbodies::vector init_momentum{planets.momentum()};
@@ -73,6 +91,38 @@ int main() {
       // DRAWING THE PLANET
       window.draw(planet_shape);
     }
+
+    double energy = planets.energy();
+    nbodies::vector momentum = planets.momentum();
+    double angular_momentum = planets.angular_momentum();
+
+    char energy_string[50];
+    char momentum_x_string[50];
+    char momentum_y_string[50];
+    char angular_momentum_string[50];
+
+    std::snprintf(energy_string, sizeof(energy_string), "%.3e", energy);
+
+    std::snprintf(momentum_x_string, sizeof(momentum_x_string), "%.3e",
+                  momentum.x);
+
+    std::snprintf(momentum_y_string, sizeof(momentum_y_string), "%.3e",
+                  momentum.y);
+
+    std::snprintf(angular_momentum_string, sizeof(angular_momentum_string),
+                  "%.3e", angular_momentum);
+
+    std::string info = "Energy:\n" + std::string(energy_string) + " J\n\n" +
+                       "Momentum:\n" + "(" + std::string(momentum_x_string) +
+                       ", " + std::string(momentum_y_string) + ") kg m/s\n\n" +
+                       "Angular momentum:\n" +
+                       std::string(angular_momentum_string) + " kg m^2/s";
+
+    info_text.setString(info);
+
+    window.draw(info_panel);
+    window.draw(info_text);
+
     window.display();
 
     t += 86400.;

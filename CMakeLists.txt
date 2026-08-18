@@ -42,8 +42,8 @@ add_executable(progetto main.cpp gravity.cpp)
 target_link_libraries(progetto PRIVATE sfml-graphics)
 
 # aggiungere eventuali altri eseguibili
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY data data_test fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY data data_test fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 
 # il testing e' abilitato di default
 # per disabilitarlo, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
@@ -51,7 +51,7 @@ if (BUILD_TESTING)
 
   # aggiungi l'eseguibile progetto.t
   add_executable(progetto.t gravity.test.cpp gravity.cpp)
-  file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+  file(COPY data_test DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
   # aggiungi l'eseguibile progetto.t alla lista dei test
   add_test(NAME progetto.t COMMAND progetto.t)
 
