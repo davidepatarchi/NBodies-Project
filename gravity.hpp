@@ -12,7 +12,6 @@ namespace constants {
 inline constexpr double G = 6.6743e-11;
 inline constexpr int dt = 60;
 inline constexpr long int AU = 149597870700;
-inline constexpr double k = 1.e-8;
 
 }  // namespace constants
 
@@ -24,7 +23,6 @@ struct vector {
   vector operator-(vector const& z) const;
   vector operator*(double a) const;
   vector operator/(double a) const;
-  // vedi se fare il prodotto simmetrico(overload di operatore fuori da vector)
   bool operator==(vector const& z) const;
   double norm() const;
 };
@@ -44,13 +42,13 @@ class Planet {
          double radius_);
 
   double mass() const;
-  vector& position();      // get position
-  vector& velocity();      // get velocity
-  vector& acceleration();  // get acceleration
+  vector& position();
+  vector& velocity();
+  vector& acceleration();
   vector const& position() const;
   vector const& velocity() const;
   vector const& acceleration() const;
-  double radius() const;  // funzione per prendere il raggio
+  double radius() const;
 };
 
 class System {

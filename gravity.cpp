@@ -8,12 +8,14 @@ namespace nbodies {
 // VECTOR'S METHODS
 vector vector::operator+(vector const& z) const { return {x + z.x, y + z.y}; }
 vector vector::operator*(double a) const { return {x * a, y * a}; }
-vector vector::operator/(double a) const { return {x / a, y / a}; }
-vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
-bool vector::operator==(vector const& z)
-    const {  // da capire se ha senso o se nei test farli separati x e y
-  return x == z.x && y == z.y;
+vector vector::operator/(double a) const {
+  if (a == 0) {
+    throw std::runtime_error("Error: division by 0");
+  }
+  return {x / a, y / a};
 }
+vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
+bool vector::operator==(vector const& z) const { return x == z.x && y == z.y; }
 double vector::norm() const { return sqrt(x * x + y * y); }
 // END OF VECTOR'S METHODS
 
@@ -42,6 +44,7 @@ Planet::Planet(double mass, vector const& position, vector const& velocity,
 
 double Planet::mass() const { return mass_; }
 double Planet::radius() const { return radius_; }
+
 // non-costant version
 vector& Planet::position() { return position_; }
 vector& Planet::velocity() { return velocity_; }
@@ -76,7 +79,7 @@ void System::iteration() {
 
   // evolving acceleration
   for (size_t i{0}; i < N; ++i) {
-    vector somma{0., 0.};
+    vector sum{0., 0.};
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
@@ -85,11 +88,10 @@ void System::iteration() {
             ((planets[j].position() - planets[i].position()).norm() *
              (planets[j].position() - planets[i].position()).norm() *
              (planets[j].position() - planets[i].position()).norm());
-        somma =
-            somma + (planets[i].position() - planets[j].position()) * new_acc;
+        sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
-    planets[i].acceleration() = somma * (-1);
+    planets[i].acceleration() = sum;
   }
 
   // evolving velocity
@@ -102,10 +104,11 @@ void System::iteration() {
 
 void System::collision() {
   for (size_t i{0}; i < planets.size();) {
-    size_t dimensione_iniziale = planets.size();
+    size_t init_size = planets.size();
     for (size_t j = i + 1; j < planets.size(); ++j) {
       if ((planets[i].position() - planets[j].position()).norm() <=
           planets[i].radius() + planets[j].radius()) {
+        // creating new coordinates
         vector new_position = (planets[i].position() * planets[i].mass() +
                                planets[j].position() * planets[j].mass()) /
                               (planets[i].mass() + planets[j].mass());
@@ -113,33 +116,32 @@ void System::collision() {
                                planets[j].velocity() * planets[j].mass()) /
                               (planets[i].mass() + planets[j].mass());
         vector new_acceleration{0., 0.};
-
         double new_mass = planets[i].mass() + planets[j].mass();
         double new_radius = sqrt(planets[i].radius() * planets[i].radius() +
                                  planets[j].radius() * planets[j].radius());
+
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j));
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
 
+        // creating a new planet
         Planet new_planet{new_mass, new_position, new_velocity,
                           new_acceleration, new_radius};
-
         size_t M = planets.size();
-        vector somma{0., 0.};
+        vector sum{0., 0.};
         for (size_t k{0}; k < M; ++k) {
           double new_acc =
               nbodies::constants::G * planets[k].mass() /
               ((planets[k].position() - new_planet.position()).norm() *
                (planets[k].position() - new_planet.position()).norm() *
                (planets[k].position() - new_planet.position()).norm());
-          somma =
-              somma + (new_planet.position() - planets[k].position()) * new_acc;
+          sum = sum - (new_planet.position() - planets[k].position()) * new_acc;
         }
-        new_planet.acceleration() = somma * (-1);
+        new_planet.acceleration() = sum;
         planets.push_back(new_planet);
-        break;
+        break;  // in order to start a new iteration check
       }
     }
-    if (planets.size() < dimensione_iniziale) {
+    if (planets.size() < init_size) {
       i = 0;
     } else {
       ++i;
@@ -169,7 +171,7 @@ void System::read_file(const std::string& filename) {
   // setting initial accelerations from data
   size_t N = planets.size();
   for (size_t i{0}; i < N; ++i) {
-    vector somma{0., 0.};
+    vector sum{0., 0.};
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
@@ -178,11 +180,10 @@ void System::read_file(const std::string& filename) {
             ((planets[j].position() - planets[i].position()).norm() *
              (planets[j].position() - planets[i].position()).norm() *
              (planets[j].position() - planets[i].position()).norm());
-        somma =
-            somma + (planets[i].position() - planets[j].position()) * new_acc;
+        sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
-    planets[i].acceleration() = somma * (-1);
+    planets[i].acceleration() = sum;
   }
 }
 

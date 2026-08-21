@@ -12,7 +12,7 @@ int main() {
   double T;
   std::cout << "How many days is the simulations going to last?\n";
   std::cin >> T;
-  T *= 86400.;
+  T *= 86400.;  // converting days in seconds
   if (nbodies::constants::dt >= T) {
     throw std::runtime_error("ERROR: The time chosen is too short!");
   }
@@ -26,6 +26,7 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
+  // SETTING FONT FOR WINDOW'S TEXTS
   sf::Font font;
   if (!font.loadFromFile("fonts/DejaVuSerif-Bold.ttf")) {
     throw std::runtime_error("ERROR: Font not found!");
@@ -42,6 +43,7 @@ int main() {
   info_text.setFillColor(sf::Color::White);
   info_text.setPosition(WIDTH - 310.f, 20.f);
 
+  // GETTING INITIAL VALUES
   double init_energy{planets.energy()};
   nbodies::vector init_momentum{planets.momentum()};
   double init_angular_momentum{planets.angular_momentum()};
@@ -61,10 +63,19 @@ int main() {
       }
     }
 
+    double energy{0.};
+    nbodies::vector momentum{0., 0.};
+    double angular_momentum{0.};
+
     if (t <= T) {
       for (int tau{0}; tau < 86400; tau += nbodies::constants::dt) {
         planets.iteration();
         planets.collision();
+
+        // getting values to print
+        energy = planets.energy();
+        momentum = planets.momentum();
+        angular_momentum = planets.angular_momentum();
       }
     }
 
@@ -92,10 +103,7 @@ int main() {
       window.draw(planet_shape);
     }
 
-    double energy = planets.energy();
-    nbodies::vector momentum = planets.momentum();
-    double angular_momentum = planets.angular_momentum();
-
+    // PRINTING VALUES
     char energy_string[50];
     char momentum_x_string[50];
     char momentum_y_string[50];
@@ -128,6 +136,7 @@ int main() {
     t += 86400.;
   }
 
+  // GETTING FINAL VALUES
   double fin_energy{planets.energy()};
   nbodies::vector fin_momentum{planets.momentum()};
   double fin_angular_momentum{planets.angular_momentum()};
@@ -136,6 +145,7 @@ int main() {
   nbodies::vector fin_scale_momentum{planets.scale_momentum()};
   double fin_scale_angular_momentum{planets.scale_angular_momentum()};
 
+  // PRINTING VALUES AND CHECKING IF THEY ARE CONSERVED
   std::cout << '\n';
   std::cout << "INITIAL AND FINAL ENERGIES: " << init_energy << " J, "
             << fin_energy << " J \n";

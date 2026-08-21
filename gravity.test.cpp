@@ -67,6 +67,23 @@ TEST_CASE("Testing: operator*") {
   CHECK(vprod3.y == -4.);
 }
 
+TEST_CASE("Testing: operator/") {
+  nbodies::vector v{4., 2.};
+
+  // dividing by a positive number
+  nbodies::vector vdiv1 = v / 2;
+  CHECK(vdiv1.x == 2.);
+  CHECK(vdiv1.y == 1.);
+
+  // dividing by 0
+  CHECK_THROWS(v / 0);
+
+  // dividing by a negative number
+  nbodies::vector vdiv2 = v / (-2);
+  CHECK(vdiv2.x == -2.);
+  CHECK(vdiv2.y == -1.);
+}
+
 TEST_CASE("Testing: operator==") {
   nbodies::vector v1{1., 2.};
   nbodies::vector v2{1., 2.};
@@ -216,8 +233,6 @@ TEST_CASE("Testing: collision()") {
   CHECK(body2.velocity().x == doctest::Approx(4375.).epsilon(1e-4));
   CHECK(body2.velocity().y == doctest::Approx(3000.0).epsilon(1e-4));
   CHECK(body2.radius() == doctest::Approx(7.211e6).epsilon(1e-4));
-  //three planets' system, no collision
-  
 }
 
 TEST_CASE("Testing: energy() and scale_energy()") {
