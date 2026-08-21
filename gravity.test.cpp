@@ -216,8 +216,6 @@ TEST_CASE("Testing: collision()") {
   CHECK(body2.velocity().x == doctest::Approx(4375.).epsilon(1e-4));
   CHECK(body2.velocity().y == doctest::Approx(3000.0).epsilon(1e-4));
   CHECK(body2.radius() == doctest::Approx(7.211e6).epsilon(1e-4));
-  //three planets' system, no collision
-  
 }
 
 TEST_CASE("Testing: energy() and scale_energy()") {
