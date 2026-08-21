@@ -33,7 +33,7 @@ int main() {
 
   sf::RectangleShape info_panel;
   info_panel.setSize(sf::Vector2f(280.f, 140.f));
- info_panel.setPosition(WIDTH - 320.f, 10.f);
+  info_panel.setPosition(WIDTH - 320.f, 10.f);
   info_panel.setFillColor(sf::Color::Transparent);
 
   sf::Text info_text;

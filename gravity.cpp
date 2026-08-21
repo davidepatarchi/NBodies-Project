@@ -30,28 +30,18 @@ void Planet::check_radius() const {
 }
 
 Planet::Planet(double mass, vector const& position, vector const& velocity,
-               vector const& acceleration, double radius) {
-  mass_ = mass;
-  position_.x = position.x;
-  position_.y = position.y;
-  velocity_.x = velocity.x;
-  velocity_.y = velocity.y;
-  acceleration_.x = acceleration.x;
-  acceleration_.y = acceleration.y;
-  radius_ = radius;
-
+               vector const& acceleration, double radius)
+    : mass_(mass),
+      position_(position),
+      velocity_(velocity),
+      acceleration_(acceleration),
+      radius_(radius) {
   check_mass();
   check_radius();
 }
 
-double Planet::mass() const {
-  check_mass();
-  return mass_;
-}
-double Planet::radius() const {
-  check_radius();
-  return radius_;
-}
+double Planet::mass() const { return mass_; }
+double Planet::radius() const { return radius_; }
 // non-costant version
 vector& Planet::position() { return position_; }
 vector& Planet::velocity() { return velocity_; }
