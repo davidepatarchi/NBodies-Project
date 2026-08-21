@@ -8,6 +8,12 @@ namespace nbodies {
 // VECTOR'S METHODS
 vector vector::operator+(vector const& z) const { return {x + z.x, y + z.y}; }
 vector vector::operator*(double a) const { return {x * a, y * a}; }
+vector vector::operator/(double a) const {
+  if (a == 0) {
+    throw std::runtime_error("Error: division by 0");
+  }
+  return {x / a, y / a};
+}
 vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
 bool vector::operator==(vector const& z) const { return x == z.x && y == z.y; }
 double vector::norm() const { return sqrt(x * x + y * y); }
@@ -26,28 +32,19 @@ void Planet::check_radius() const {
 }
 
 Planet::Planet(double mass, vector const& position, vector const& velocity,
-               vector const& acceleration, double radius) {
-  mass_ = mass;
-  position_.x = position.x;
-  position_.y = position.y;
-  velocity_.x = velocity.x;
-  velocity_.y = velocity.y;
-  acceleration_.x = acceleration.x;
-  acceleration_.y = acceleration.y;
-  radius_ = radius;
-
+               vector const& acceleration, double radius)
+    : mass_(mass),
+      position_(position),
+      velocity_(velocity),
+      acceleration_(acceleration),
+      radius_(radius) {
   check_mass();
   check_radius();
 }
 
-double Planet::mass() const {
-  check_mass();
-  return mass_;
-}
-double Planet::radius() const {
-  check_radius();
-  return radius_;
-}
+double Planet::mass() const { return mass_; }
+double Planet::radius() const { return radius_; }
+
 // non-costant version
 vector& Planet::position() { return position_; }
 vector& Planet::velocity() { return velocity_; }
@@ -87,8 +84,10 @@ void System::iteration() {
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
         double new_acc =
-            constants::G * planets[j].mass() *
-            pow((planets[j].position() - planets[i].position()).norm(), -3);
+            constants::G * planets[j].mass() /
+            ((planets[j].position() - planets[i].position()).norm() *
+             (planets[j].position() - planets[i].position()).norm() *
+             (planets[j].position() - planets[i].position()).norm());
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
@@ -111,17 +110,16 @@ void System::collision() {
           planets[i].radius() + planets[j].radius()) {
         // creating new coordinates
         vector new_position = (planets[i].position() * planets[i].mass() +
-                               planets[j].position() * planets[j].mass()) *
-                              pow(planets[i].mass() + planets[j].mass(), -1);
+                               planets[j].position() * planets[j].mass()) /
+                              (planets[i].mass() + planets[j].mass());
         vector new_velocity = (planets[i].velocity() * planets[i].mass() +
-                               planets[j].velocity() * planets[j].mass()) *
-                              pow(planets[i].mass() + planets[j].mass(), -1);
+                               planets[j].velocity() * planets[j].mass()) /
+                              (planets[i].mass() + planets[j].mass());
         vector new_acceleration{0., 0.};
         double new_mass = planets[i].mass() + planets[j].mass();
-        double new_radius =
-            sqrt(pow(planets[i].radius(), 2) + pow(planets[j].radius(), 2));
+        double new_radius = sqrt(planets[i].radius() * planets[i].radius() +
+                                 planets[j].radius() * planets[j].radius());
 
-        // deleting colliding planets
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j));
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
 
@@ -132,8 +130,10 @@ void System::collision() {
         vector sum{0., 0.};
         for (size_t k{0}; k < M; ++k) {
           double new_acc =
-              nbodies::constants::G * planets[k].mass() *
-              pow((planets[k].position() - new_planet.position()).norm(), -3);
+              nbodies::constants::G * planets[k].mass() /
+              ((planets[k].position() - new_planet.position()).norm() *
+               (planets[k].position() - new_planet.position()).norm() *
+               (planets[k].position() - new_planet.position()).norm());
           sum = sum - (new_planet.position() - planets[k].position()) * new_acc;
         }
         new_planet.acceleration() = sum;
@@ -176,8 +176,10 @@ void System::read_file(const std::string& filename) {
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
         double new_acc =
-            constants::G * planets[j].mass() *
-            pow((planets[j].position() - planets[i].position()).norm(), -3);
+            constants::G * planets[j].mass() /
+            ((planets[j].position() - planets[i].position()).norm() *
+             (planets[j].position() - planets[i].position()).norm() *
+             (planets[j].position() - planets[i].position()).norm());
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
@@ -188,7 +190,8 @@ void System::read_file(const std::string& filename) {
 double System::energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
-        return sum + 0.5 * body.mass() * pow(body.velocity().norm(), 2);
+        return sum + 0.5 * body.mass() * body.velocity().norm() *
+                         body.velocity().norm();
       });
 
   size_t N = planets.size();
@@ -209,7 +212,8 @@ double System::energy() {
 double System::scale_energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
-        return sum + 0.5 * body.mass() * pow(body.velocity().norm(), 2);
+        return sum + 0.5 * body.mass() * body.velocity().norm() *
+                         body.velocity().norm();
       });
 
   size_t N = planets.size();

@@ -22,6 +22,7 @@ struct vector {
   vector operator+(vector const& z) const;
   vector operator-(vector const& z) const;
   vector operator*(double a) const;
+  vector operator/(double a) const;
   bool operator==(vector const& z) const;
   double norm() const;
 };
