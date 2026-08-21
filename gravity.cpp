@@ -72,7 +72,7 @@ void System::iteration() {
   std::for_each(planets.begin(), planets.end(), [](Planet& body) {
     body.position() =
         body.position() + body.velocity() * nbodies::constants::dt +
-        body.acceleration() * 0.5 * pow(nbodies::constants::dt, 2);
+        body.acceleration() * 0.5 * nbodies::constants::dt * nbodies::constants::dt;
   });
 
   // saving initial acceleration
