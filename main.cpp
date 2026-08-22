@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <cstdio>
 #include <iostream>
-
 #include "gravity.hpp"
 
 int main() {

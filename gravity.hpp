@@ -54,6 +54,7 @@ class Planet {
 class System {
  private:
   std::vector<Planet> planets;
+  void check_size() const;
 
  public:
   Planet& get_planet(size_t i);

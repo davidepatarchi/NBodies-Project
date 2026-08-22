@@ -57,6 +57,11 @@ vector const& Planet::acceleration() const { return acceleration_; }
 // END OF PLANET'S METHODS
 
 // SYSTEM'S METHODS
+void System::check_size() const {
+  if (planets.size() <= 0) {
+    throw std::runtime_error{"The size is incoherent!"};
+  }
+}
 Planet& System::get_planet(size_t i) { return planets[i]; }
 
 size_t System::size() const { return planets.size(); }
@@ -147,6 +152,7 @@ void System::collision() {
       ++i;
     }
   }
+  check_size();
 }
 
 void System::read_file(const std::string& filename) {
@@ -185,6 +191,7 @@ void System::read_file(const std::string& filename) {
     }
     planets[i].acceleration() = sum;
   }
+  check_size();
 }
 
 double System::energy() {
