@@ -148,6 +148,10 @@ TEST_CASE("Testing: non-const getter functions") {
 // END OF PLANET'S TESTS
 
 // SYSTEM'S TESTS
+TEST_CASE("Testing: check_size()") {
+  nbodies::System planets9;
+  CHECK_THROWS_AS(planets9.read_file("data_test/test9.txt"), std::runtime_error);
+}
 TEST_CASE("Testing: read_file(), size() and get_planet()") {
   nbodies::System planets1;
   planets1.read_file("data_test/test1.txt");
