@@ -38,8 +38,8 @@ class Planet {
   void check_radius() const;
 
  public:
-  Planet(double m, vector const& r, vector const& v, vector const& a,
-         double radius_);
+  Planet(double mass, vector const& position, vector const& velocity,
+         vector const& acceleration, double radius);
 
   double mass() const;
   vector& position();

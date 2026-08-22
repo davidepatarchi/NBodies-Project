@@ -45,12 +45,12 @@ Planet::Planet(double mass, vector const& position, vector const& velocity,
 double Planet::mass() const { return mass_; }
 double Planet::radius() const { return radius_; }
 
-// non-costant version
+// non-const version
 vector& Planet::position() { return position_; }
 vector& Planet::velocity() { return velocity_; }
 vector& Planet::acceleration() { return acceleration_; }
 
-// costant version
+// const version
 vector const& Planet::position() const { return position_; }
 vector const& Planet::velocity() const { return velocity_; }
 vector const& Planet::acceleration() const { return acceleration_; }
@@ -283,7 +283,11 @@ float AU_pixel_y(double y) {
   return float((1 - (y / nbodies::constants::AU) * 0.9) * 400.);
 }
 float pixel_radius(double r) {
-  double exp = int(std::log10(r));
+  if (r < 10) {
+    return 1.f;
+  }
+
+  int exp = int(std::log10(r));
   double base = r / pow(10, exp);
   if (base < 5) {
     return float(exp);

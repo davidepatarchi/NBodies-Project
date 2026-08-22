@@ -26,6 +26,11 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
+  //SETTING COLORS
+  std::vector<sf::Color> palette = {sf::Color::Yellow, sf::Color::Red,
+                                      sf::Color::Green,  sf::Color::Magenta,
+                                      sf::Color::Cyan,   sf::Color::Blue};
+
   // SETTING FONT FOR WINDOW'S TEXTS
   sf::Font font;
   if (!font.loadFromFile("fonts/DejaVuSerif-Bold.ttf")) {
@@ -67,7 +72,7 @@ int main() {
     nbodies::vector momentum{0., 0.};
     double angular_momentum{0.};
 
-    if (t <= T) {
+    if (t < T) {
       for (int tau{0}; tau < 86400; tau += nbodies::constants::dt) {
         planets.iteration();
         planets.collision();
@@ -79,11 +84,7 @@ int main() {
       }
     }
 
-    // SETTING FIGURES AND COLORS
     window.clear(sf::Color::Black);
-    std::vector<sf::Color> palette = {sf::Color::Yellow, sf::Color::Red,
-                                      sf::Color::Green,  sf::Color::Magenta,
-                                      sf::Color::Cyan,   sf::Color::Blue};
 
     // CREATING ALL THE PLANETS
     for (size_t i{0}; i < planets.size(); ++i) {
@@ -91,10 +92,10 @@ int main() {
       float y_pixel = nbodies::AU_pixel_y(planets.get_planet(i).position().y);
 
       // CREATING A CIRCLE
-      sf::CircleShape planet_shape(
-          float(nbodies::pixel_radius(planets.get_planet(i).radius())));
+      float radius = nbodies::pixel_radius(planets.get_planet(i).radius());
+      sf::CircleShape planet_shape(radius);
       planet_shape.setFillColor(palette[i % palette.size()]);
-      planet_shape.setOrigin(5.f, 5.f);
+      planet_shape.setOrigin(radius, radius);
 
       // SETTING COORDINATES
       planet_shape.setPosition(x_pixel, y_pixel);
