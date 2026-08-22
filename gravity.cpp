@@ -59,7 +59,7 @@ vector const& Planet::acceleration() const { return acceleration_; }
 // SYSTEM'S METHODS
 void System::check_size() const {
   if (planets.size() <= 0) {
-    throw std::runtime_error{"The size is incoherent!"};
+    throw std::runtime_error{"ERROR: Empty file!"};
   }
 }
 Planet& System::get_planet(size_t i) { return planets[i]; }
