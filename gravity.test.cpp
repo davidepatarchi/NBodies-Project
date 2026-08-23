@@ -76,7 +76,7 @@ TEST_CASE("Testing: operator/") {
   CHECK(vdiv1.y == 1.);
 
   // dividing by 0
-  CHECK_THROWS(v / 0);
+  CHECK_THROWS_AS(v / 0, std::runtime_error);
 
   // dividing by a negative number
   nbodies::vector vdiv2 = v / (-2);
@@ -127,10 +127,10 @@ TEST_CASE("Testing: constructor and getter functions") {
 
 TEST_CASE("Testing: check_mass() and check_radius()") {
   // invalid mass
-  CHECK_THROWS(nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.});
+  CHECK_THROWS_AS((nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.}), std::runtime_error);
 
   // invalid radius
-  CHECK_THROWS(nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.});
+  CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.}), std::runtime_error);
 }
 
 TEST_CASE("Testing: non-const getter functions") {
@@ -174,7 +174,7 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
 
   // checking not-existing file
   nbodies::System planets2;
-  CHECK_THROWS(planets2.read_file("fake_file.txt"));
+  CHECK_THROWS_AS(planets2.read_file("fake_file.txt"), std::runtime_error);
 }
 
 TEST_CASE("Testing: iteration()") {
