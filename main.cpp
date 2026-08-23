@@ -17,7 +17,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/solarsystem.txt");
+  planets.read_file("data/dwarfdance.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;

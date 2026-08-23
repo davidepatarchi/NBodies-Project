@@ -100,6 +100,7 @@ void System::iteration() {
   }
 
   // evolving velocity
+
   for (size_t i{0}; i < N; ++i) {
     planets[i].velocity() =
         planets[i].velocity() + (planets[i].acceleration() + init_acc[i]) *
@@ -248,7 +249,7 @@ vector System::momentum() {
                                [](double sum, Planet const& body) {
                                  return sum + body.velocity().y * body.mass();
                                });
-  return {momentum.x, momentum.y};
+  return momentum;
 }
 
 vector System::scale_momentum() {
@@ -261,7 +262,7 @@ vector System::scale_momentum() {
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + std::abs(body.velocity().y * body.mass());
       });
-  return {momentum.x, momentum.y};
+  return momentum;
 }
 
 double System::angular_momentum() {
