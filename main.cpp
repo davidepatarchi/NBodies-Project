@@ -7,7 +7,7 @@ int main() {
   nbodies::System planets;
 
   // SETTING TIMES
-  double t{0};
+  double t{0.};
   double T;
   std::cout << "How many days is the simulations going to last?\n";
   std::cin >> T;
@@ -19,9 +19,10 @@ int main() {
   // READING FILE WITH PLANETS DATA
   planets.read_file("data/dwarfdance.txt");
 
-  // CREATING SFML WINDOW
+  // CREATING SFML WINDOW 
   const int WIDTH = 800;
   const int HEIGHT = 800;
+
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
