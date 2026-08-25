@@ -17,7 +17,7 @@ int main() {
   }
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/dwarfdance.txt");
+  planets.read_file("data/solarsystem.txt");
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
@@ -67,19 +67,10 @@ int main() {
       }
     }
 
-    double energy{0.};
-    nbodies::vector momentum{0., 0.};
-    double angular_momentum{0.};
-
     if (t < T) {
       for (int tau{0}; tau < 86400; tau += nbodies::constants::dt) {
         planets.iteration();
         planets.collision();
-
-        // getting values to print
-        energy = planets.energy();
-        momentum = planets.momentum();
-        angular_momentum = planets.angular_momentum();
       }
     }
 
@@ -104,6 +95,9 @@ int main() {
     }
 
     // PRINTING VALUES
+    double energy = planets.energy();
+    nbodies::vector momentum = planets.momentum();
+    double angular_momentum = planets.angular_momentum();
     char energy_string[50];
     char momentum_x_string[50];
     char momentum_y_string[50];
@@ -157,7 +151,7 @@ int main() {
     double mean_scale_energy = (fin_scale_energy + init_scale_energy) / 2;
     double err_energy = std::abs(fin_energy - init_energy);
     double rel_err_energy = std::abs(err_energy / mean_scale_energy);
-    std::cout << "RELATIVE ERROR: " << rel_err_energy * 100;
+    std::cout << "RELATIVE ERROR: " << rel_err_energy;
 
     if (rel_err_energy <= 0.01) {
       std::cout << " -> ENERGY CONSERVED!" << "\n\n";
@@ -180,7 +174,7 @@ int main() {
         (fin_scale_momentum.norm() + init_scale_momentum.norm()) / 2;
     double err_momentum = std::abs(fin_momentum.norm() - init_momentum.norm());
     double rel_err_momentum = err_momentum / mean_scale_momentum;
-    std::cout << "RELATIVE ERROR: " << rel_err_momentum * 100;
+    std::cout << "RELATIVE ERROR: " << rel_err_momentum;
 
     if (rel_err_momentum <= 0.01) {
       std::cout << " -> MOMENTUM CONSERVED!" << "\n\n";
@@ -203,7 +197,7 @@ int main() {
         (std::abs(fin_angular_momentum - init_angular_momentum));
     double rel_err_angular_momentum =
         std::abs(err_angular_momentum / mean_scale_angular_momentum);
-    std::cout << "RELATIVE ERROR: " << rel_err_angular_momentum * 100;
+    std::cout << "RELATIVE ERROR: " << rel_err_angular_momentum;
 
     if (rel_err_angular_momentum <= 0.01) {
       std::cout << " -> ANGULAR MOMENTUM CONSERVED!" << '\n';
