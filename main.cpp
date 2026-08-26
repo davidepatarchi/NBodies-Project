@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdio>
 #include <iostream>
+
 #include "gravity.hpp"
 
 int main() {
@@ -19,17 +20,17 @@ int main() {
   // READING FILE WITH PLANETS DATA
   planets.read_file("data/solarsystem.txt");
 
-  // CREATING SFML WINDOW 
+  // CREATING SFML WINDOW
   const int WIDTH = 800;
   const int HEIGHT = 800;
 
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
-  //SETTING COLORS
+  // SETTING COLORS
   std::vector<sf::Color> palette = {sf::Color::Yellow, sf::Color::Red,
-                                      sf::Color::Green,  sf::Color::Magenta,
-                                      sf::Color::Cyan,   sf::Color::Blue};
+                                    sf::Color::Green,  sf::Color::Magenta,
+                                    sf::Color::Cyan,   sf::Color::Blue};
 
   // SETTING FONT FOR WINDOW'S TEXTS
   sf::Font font;

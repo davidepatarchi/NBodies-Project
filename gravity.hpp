@@ -2,7 +2,6 @@
 #define NBODIES_GRAVITY_HPP
 #include <cmath>
 #include <fstream>
-#include <iostream>
 #include <stdexcept>
 #include <vector>
 
@@ -74,6 +73,6 @@ float AU_pixel_x(double x);
 float AU_pixel_y(double y);
 float pixel_radius(double r);
 
+// namespace nbodies
 }  // namespace nbodies
-
 #endif

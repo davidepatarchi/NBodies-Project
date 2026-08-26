@@ -127,10 +127,12 @@ TEST_CASE("Testing: constructor and getter functions") {
 
 TEST_CASE("Testing: check_mass() and check_radius()") {
   // invalid mass
-  CHECK_THROWS_AS((nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.}), std::runtime_error);
+  CHECK_THROWS_AS((nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.}),
+                  std::runtime_error);
 
   // invalid radius
-  CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.}), std::runtime_error);
+  CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.}),
+                  std::runtime_error);
 }
 
 TEST_CASE("Testing: non-const getter functions") {
@@ -150,7 +152,8 @@ TEST_CASE("Testing: non-const getter functions") {
 // SYSTEM'S TESTS
 TEST_CASE("Testing: check_size()") {
   nbodies::System planets9;
-  CHECK_THROWS_AS(planets9.read_file("data_test/test9.txt"), std::runtime_error);
+  CHECK_THROWS_AS(planets9.read_file("data_test/test9.txt"),
+                  std::runtime_error);
 }
 TEST_CASE("Testing: read_file(), size() and get_planet()") {
   nbodies::System planets1;

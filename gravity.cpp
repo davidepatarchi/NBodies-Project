@@ -302,6 +302,7 @@ float pixel_radius(double r) {
   }
   return float(exp + 1);
 }
+
 // END OF SFML FUNCTIONS
 
 }  // namespace nbodies
