@@ -46,7 +46,7 @@ $ pwd
 /home/davidepatarchi/programmazione_fisica/pf_progetto/NBodies-Project
 $ cd build/Debug
 $ ./progetto.t
-$ cd ../../build/Release
+$ cd ../Release
 $ ./progetto.t
 ```
 If all the tests pass correctly, you can move on to the last step: running the project.
