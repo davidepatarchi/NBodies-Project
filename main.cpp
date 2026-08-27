@@ -12,7 +12,7 @@ int main() {
   int T;
   std::cout << "How many days is the simulations going to last?\n";
   if (!(std::cin >> T) || !std::isfinite(T) || T < 1) {
-    throw std::runtime_error("ERROR: The time chosen is not valid!");
+    throw std::invalid_argument("ERROR: The time chosen is not valid!");
   }
   T *= 86400;  // converting days in seconds
 
