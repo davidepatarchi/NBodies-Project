@@ -21,12 +21,12 @@ double vector::norm() const { return sqrt(x * x + y * y); }
 
 // PLANET'S METHODS
 void Planet::check_mass() const {
-  if (mass_ <= 0) {
+  if (mass_ <= 0 || !std::isfinite(mass_)) {
     throw std::runtime_error("ERROR: Invalid mass!");
   }
 }
 void Planet::check_radius() const {
-  if (radius_ <= 0) {
+  if (radius_ <= 0 || !std::isfinite(radius_)) {
     throw std::runtime_error("ERROR: Invalid radius!");
   }
 }
@@ -164,6 +164,9 @@ void System::read_file(const std::string& filename) {
   double velocity_x;
   double velocity_y;
   double radius;
+
+  //erase an old configuration
+  planets.clear();
 
   if (!file.is_open()) {
     throw std::runtime_error("ERROR: File opening failed");

@@ -9,16 +9,16 @@ int main() {
 
   // SETTING TIMES
   double t{0.};
-  double T;
+  int T;
   std::cout << "How many days is the simulations going to last?\n";
-  std::cin >> T;
-  T *= 86400.;  // converting days in seconds
-  if (nbodies::constants::dt >= T) {
-    throw std::runtime_error("ERROR: The time chosen is too short!");
+  if (!(std::cin >> T) || !std::isfinite(T) || T < 1) {
+    throw std::runtime_error("ERROR: The time chosen is not valid!");
   }
+  T *= 86400;  // converting days in seconds
 
   // READING FILE WITH PLANETS DATA
   planets.read_file("data/solarsystem.txt");
+  planets.collision();
 
   // CREATING SFML WINDOW
   const int WIDTH = 800;
