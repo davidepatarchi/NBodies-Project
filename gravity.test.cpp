@@ -128,21 +128,21 @@ TEST_CASE("Testing: constructor and getter functions") {
 TEST_CASE("Testing: check_mass() and check_radius()") {
   // invalid mass
   CHECK_THROWS_AS((nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.}),
-                  std::runtime_error);
+                  std::invalid_argument);
   CHECK_THROWS_AS((nbodies::Planet{0., {2., 3.}, {4., 5.}, {6., 7.}, 8.}),
-                  std::runtime_error);
+                  std::invalid_argument);
   double nan = std::numeric_limits<double>::quiet_NaN();
 
   CHECK_THROWS_AS((nbodies::Planet{nan, nbodies::vector{0.0, 0.0},
                                    nbodies::vector{0.0, 0.0},
                                    nbodies::vector{0., 0.}, 1.0}),
-                  std::runtime_error);
+                  std::invalid_argument);
 
   // invalid radius
   CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.}),
-                  std::runtime_error);
+                  std::invalid_argument);
   CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, 0.}),
-                  std::runtime_error);
+                  std::invalid_argument);
 }
 
 TEST_CASE("Testing: non-const getter functions") {

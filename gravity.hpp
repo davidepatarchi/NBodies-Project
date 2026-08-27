@@ -61,12 +61,12 @@ class System {
   void iteration();
   void collision();
   void read_file(const std::string& filename);
-  double const& energy();
-  double const& scale_energy();
-  vector const& momentum();
-  vector const& scale_momentum();
-  double const& angular_momentum();
-  double const& scale_angular_momentum();
+  double energy();
+  double scale_energy();
+  vector momentum();
+  vector scale_momentum();
+  double angular_momentum();
+  double scale_angular_momentum();
 };
 
 float AU_pixel_x(double x);
