@@ -63,7 +63,13 @@ void System::check_size() const {
     throw std::runtime_error{"ERROR: Empty file!"};
   }
 }
-Planet& System::get_planet(size_t i) { return planets[i]; }
+Planet& System::get_planet(size_t i) {
+  if (i < planets.size()) {
+    return planets[i];
+  } else {
+    throw std::runtime_error("Value of get_planet to high");
+  }
+}
 
 size_t System::size() const { return planets.size(); }
 
