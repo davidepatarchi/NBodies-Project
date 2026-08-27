@@ -186,10 +186,13 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
   CHECK(body.acceleration().y == doctest::Approx(7.337e-9));
   planets1.read_file("data_test/test2.txt");
   CHECK(planets1.size() == 1.);
-
+  CHECK_THROWS_AS(planets1.get_planet(2), std::runtime_error);
   // checking not-existing file
   nbodies::System planets2;
   CHECK_THROWS_AS(planets2.read_file("fake_file.txt"), std::runtime_error);
+  // checking wrong file
+  CHECK_THROWS_AS(planets2.read_file("data_test/test10.txt"),
+                  std::runtime_error);
 }
 
 TEST_CASE("Testing: iteration()") {
