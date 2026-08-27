@@ -1,0 +1,15 @@
+# ninja log v5
+4	2123	1787844025800160568	CMakeFiles/progetto.dir/Debug/gravity.cpp.o	ae5d0e7dc5bd9486
+6	2124	1787844025800160568	CMakeFiles/progetto.t.dir/Debug/gravity.cpp.o	fa108bf475f15250
+2	2161	1787844025836160570	CMakeFiles/progetto.dir/Debug/main.cpp.o	563de48e770931
+2161	2361	1787844026036160579	Debug/progetto	3d4ff95e267d8c25
+5	8758	1787844032425140236	CMakeFiles/progetto.t.dir/Debug/gravity.test.cpp.o	570ae14cb50f03f1
+8758	8961	1787844032637140245	Debug/progetto.t	193ffa05ffced9af
+1	87	0	CMakeFiles/Debug/test.util	36305b82488ff81e
+3	1856	1787844050375549993	CMakeFiles/progetto.dir/Release/gravity.cpp.o	b721056ddaa0a9fc
+5	2005	1787844050527549497	CMakeFiles/progetto.t.dir/Release/gravity.cpp.o	a34e0929628b10e8
+2	2199	1787844050719548869	CMakeFiles/progetto.dir/Release/main.cpp.o	6974ae8b6d716bbc
+2199	2348	1787844050869529727	Release/progetto	edfe74ce15e9b5ac
+4	8557	1787844057074146771	CMakeFiles/progetto.t.dir/Release/gravity.test.cpp.o	69c8cc9e691b556e
+8557	8673	1787844057190146777	Release/progetto.t	d524b641705aebaf
+1	23	0	CMakeFiles/Release/test.util	e397c3a859e9a825

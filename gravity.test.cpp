@@ -76,7 +76,7 @@ TEST_CASE("Testing: operator/") {
   CHECK(vdiv1.y == 1.);
 
   // dividing by 0
-  CHECK_THROWS_AS(v / 0, std::runtime_error);
+  CHECK_THROWS_AS(v / 0, std::invalid_argument);
 
   // dividing by a negative number
   nbodies::vector vdiv2 = v / (-2);
@@ -185,7 +185,7 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
   CHECK(body.acceleration().x == doctest::Approx(7.337e-9));
   CHECK(body.acceleration().y == doctest::Approx(7.337e-9));
   planets1.read_file("data_test/test2.txt");
-  CHECK(planets1.size() == 1.);
+  CHECK(planets1.size() == size_t(1.));
   CHECK_THROWS_AS(planets1.get_planet(2), std::runtime_error);
   // checking not-existing file
   nbodies::System planets2;
