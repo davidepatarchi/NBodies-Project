@@ -206,7 +206,7 @@ double System::energy() {
   double potential{0.0};
   for (size_t i{0}; i < N; ++i) {
     double tot = std::accumulate(
-        planets.begin(), planets.begin() + int(i), 0.0,
+        planets.begin(), planets.begin() + static_cast<std::ptrdiff_t>(i), 0.0,
         [&](double sum, Planet const& body) {
           return sum - nbodies::constants::G *
                            (planets[i].mass() * body.mass()) /
@@ -228,7 +228,7 @@ double System::scale_energy() {
   double potential{0.0};
   for (size_t i{0}; i < N; ++i) {
     double tot = std::accumulate(
-        planets.begin(), planets.begin() + int(i), 0.0,
+        planets.begin(), planets.begin() + static_cast<std::ptrdiff_t>(i), 0.0,
         [&](double sum, Planet const& body) {
           return sum + nbodies::constants::G *
                            (planets[i].mass() * body.mass()) /

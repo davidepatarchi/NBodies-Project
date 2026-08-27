@@ -79,7 +79,8 @@ int main() {
     window.clear(sf::Color::Black);
 
     // CREATING ALL THE PLANETS
-    for (size_t i{0}; i < planets.size(); ++i) {
+    const size_t N = planets.size();
+    for (size_t i{0}; i < N; ++i) {
       float x_pixel = nbodies::AU_pixel_x(planets.get_planet(i).position().x);
       float y_pixel = nbodies::AU_pixel_y(planets.get_planet(i).position().y);
 
@@ -174,8 +175,10 @@ int main() {
   } else {
     double mean_scale_momentum =
         (fin_scale_momentum.norm() + init_scale_momentum.norm()) / 2;
-    double err_momentum = std::abs(fin_momentum.norm() - init_momentum.norm());
+
+    double err_momentum = (fin_momentum - init_momentum).norm();
     double rel_err_momentum = err_momentum / mean_scale_momentum;
+
     std::cout << "RELATIVE ERROR: " << rel_err_momentum;
 
     if (rel_err_momentum <= 0.01) {
