@@ -210,7 +210,7 @@ void System::read_file(const std::string& filename) {
   check_size();
 }
 
-double const& System::energy() {
+double System::energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -232,7 +232,7 @@ double const& System::energy() {
   return kinetic + potential;
 }
 
-double const& System::scale_energy() {
+double System::scale_energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -254,7 +254,7 @@ double const& System::scale_energy() {
   return kinetic + potential;
 }
 
-vector const& System::momentum() {
+vector System::momentum() {
   vector momentum;
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
@@ -267,7 +267,7 @@ vector const& System::momentum() {
   return momentum;
 }
 
-vector const& System::scale_momentum() {
+vector System::scale_momentum() {
   vector momentum;
   momentum.x = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
@@ -280,7 +280,7 @@ vector const& System::scale_momentum() {
   return momentum;
 }
 
-double const& System::angular_momentum() {
+double System::angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + body.mass() * (body.position().x * body.velocity().y -
@@ -288,7 +288,7 @@ double const& System::angular_momentum() {
       });
 }
 
-double const& System::scale_angular_momentum() {
+double System::scale_angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum +
