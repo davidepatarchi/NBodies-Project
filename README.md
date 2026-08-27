@@ -55,7 +55,7 @@ $ pwd
 /home/davidepatarchi/programmazione_fisica/pf_progetto/NBodies-Project
 $ cd build/Debug
 $ ./progetto
-$ cd ../../build/Release
+$ cd ../Release
 $ ./progetto
 ```
 Once the executables are running, you will be asked how many days the simulation should last (enter a value greater than 1). After that, a graphical window will open, showing the evolution of the planets. Once the simulation is finished, close the graphical window to print, in the terminal, the analysis of the conservation of energy, momentum, and angular momentum.
