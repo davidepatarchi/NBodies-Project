@@ -129,9 +129,19 @@ TEST_CASE("Testing: check_mass() and check_radius()") {
   // invalid mass
   CHECK_THROWS_AS((nbodies::Planet{-1., {2., 3.}, {4., 5.}, {6., 7.}, 8.}),
                   std::runtime_error);
+  CHECK_THROWS_AS((nbodies::Planet{0., {2., 3.}, {4., 5.}, {6., 7.}, 8.}),
+                  std::runtime_error);
+  double nan = std::numeric_limits<double>::quiet_NaN();
+
+  CHECK_THROWS_AS((nbodies::Planet{nan, nbodies::vector{0.0, 0.0},
+                                   nbodies::vector{0.0, 0.0},
+                                   nbodies::vector{0., 0.}, 1.0}),
+                  std::runtime_error);
 
   // invalid radius
   CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, -8.}),
+                  std::runtime_error);
+  CHECK_THROWS_AS((nbodies::Planet{1., {2., 3.}, {4., 5.}, {6., 7.}, 0.}),
                   std::runtime_error);
 }
 
@@ -174,6 +184,8 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
   // checking second planet's accelerations
   CHECK(body.acceleration().x == doctest::Approx(7.337e-9));
   CHECK(body.acceleration().y == doctest::Approx(7.337e-9));
+  planets1.read_file("data_test/test2.txt");
+  CHECK(planets1.size() == 1.);
 
   // checking not-existing file
   nbodies::System planets2;

@@ -62,7 +62,13 @@ void System::check_size() const {
     throw std::runtime_error{"ERROR: Empty file!"};
   }
 }
-Planet& System::get_planet(size_t i) { return planets[i]; }
+Planet& System::get_planet(size_t i) {
+  if (i < planets.size()) {
+    return planets[i];
+  } else {
+    throw std::runtime_error("Value of get_planet to high");
+  }
+}
 
 size_t System::size() const { return planets.size(); }
 
@@ -165,7 +171,7 @@ void System::read_file(const std::string& filename) {
   double velocity_y;
   double radius;
 
-  //erase an old configuration
+  // erase an old configuration
   planets.clear();
 
   if (!file.is_open()) {
