@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <sstream>
 
 namespace nbodies {
 
@@ -10,7 +11,7 @@ vector vector::operator+(vector const& z) const { return {x + z.x, y + z.y}; }
 vector vector::operator*(double a) const { return {x * a, y * a}; }
 vector vector::operator/(double a) const {
   if (a == 0) {
-    throw std::runtime_error("Error: division by 0");
+    throw std::invalid_argument("Error: division by 0");
   }
   return {x / a, y / a};
 }
@@ -22,12 +23,12 @@ double vector::norm() const { return sqrt(x * x + y * y); }
 // PLANET'S METHODS
 void Planet::check_mass() const {
   if (mass_ <= 0 || !std::isfinite(mass_)) {
-    throw std::runtime_error("ERROR: Invalid mass!");
+    throw std::invalid_argument("ERROR: Invalid mass!");
   }
 }
 void Planet::check_radius() const {
   if (radius_ <= 0 || !std::isfinite(radius_)) {
-    throw std::runtime_error("ERROR: Invalid radius!");
+    throw std::invalid_argument("ERROR: Invalid radius!");
   }
 }
 
@@ -164,6 +165,7 @@ void System::collision() {
 
 void System::read_file(const std::string& filename) {
   std::ifstream file(filename);
+  std::string line;
   double mass;
   double position_x;
   double position_y;
@@ -178,8 +180,18 @@ void System::read_file(const std::string& filename) {
     throw std::runtime_error("ERROR: File opening failed");
   }
 
-  while (file >> mass >> position_x >> position_y >> velocity_x >> velocity_y >>
-         radius) {
+  while (std::getline(file, line)) {
+    // checking file lines
+    std::stringstream stream(line);
+    if (!(stream >> mass >> position_x >> position_y >> velocity_x >>
+          velocity_y >> radius)) {
+      throw std::runtime_error("Error! Invalid line in the file");
+    }
+    double extra;
+    if (stream >> extra) {
+      throw std::runtime_error("Error! Invalid line in the file");
+    }
+
     Planet body(mass, {position_x, position_y}, {velocity_x, velocity_y},
                 {0., 0.}, radius);
     planets.push_back(body);
@@ -204,7 +216,7 @@ void System::read_file(const std::string& filename) {
   check_size();
 }
 
-double System::energy() {
+double const& System::energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -226,7 +238,7 @@ double System::energy() {
   return kinetic + potential;
 }
 
-double System::scale_energy() {
+double const& System::scale_energy() {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -248,7 +260,7 @@ double System::scale_energy() {
   return kinetic + potential;
 }
 
-vector System::momentum() {
+vector const& System::momentum() {
   vector momentum;
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
@@ -261,7 +273,7 @@ vector System::momentum() {
   return momentum;
 }
 
-vector System::scale_momentum() {
+vector const& System::scale_momentum() {
   vector momentum;
   momentum.x = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
@@ -274,7 +286,7 @@ vector System::scale_momentum() {
   return momentum;
 }
 
-double System::angular_momentum() {
+double const& System::angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + body.mass() * (body.position().x * body.velocity().y -
@@ -282,7 +294,7 @@ double System::angular_momentum() {
       });
 }
 
-double System::scale_angular_momentum() {
+double const& System::scale_angular_momentum() {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum +
