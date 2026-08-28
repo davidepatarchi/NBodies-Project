@@ -9,10 +9,10 @@ int main() {
   nbodies::System planets;
 
   // SETTING TIMES
-  double t{0.};
-  int T;
+  long long int t{0};
+  long long int T;
   std::cout << "How many days is the simulations going to last?\n";
-  if (!(std::cin >> T) || T == std::numeric_limits<int>::max() || T < 1) {
+  if (!(std::cin >> T) || T < 1) {
     throw std::invalid_argument("ERROR: The time chosen is not valid!");
   }
   T *= 86400;  // converting days in seconds
@@ -131,7 +131,7 @@ int main() {
 
     window.display();
 
-    t += 86400.;
+    t += 86400;
   }
 
   // GETTING FINAL VALUES
