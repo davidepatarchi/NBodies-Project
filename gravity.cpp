@@ -321,11 +321,11 @@ double System::scale_angular_momentum() const {
 // SFML FUNCTIONS
 float AU_pixel_x(double x) {
   return float((1 + (x / nbodies::constants::AU) * 0.9) *
-               (nbodies::constants::height / 2.));
+               (nbodies::constants::width / 2.));
 }
 float AU_pixel_y(double y) {
   return float((1 - (y / nbodies::constants::AU) * 0.9) *
-               (nbodies::constants::width / 2.));
+               (nbodies::constants::height / 2.));
 }
 float pixel_radius(double r) {
   if (r < 10) {
