@@ -210,17 +210,12 @@ void System::read_file(const std::string& filename) {
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
-        double distance =
-            (planets[j].position() - planets[i].position()).norm();
-        /*if (!std::isfinite(distance)) {
-          throw std::runtime_error(
-              "Error: There are planets in the same position! ");
-        }*/
         if (planets[i].position() == planets[j].position()) {
           throw std::runtime_error(
               "Error: There are planets in the same position! ");
         }
 
+        double distance = (planets[i].position() - planets[j].position()).norm();
         double new_acc =
             constants::G * planets[j].mass() / (distance * distance * distance);
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
