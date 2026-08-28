@@ -193,6 +193,8 @@ TEST_CASE("Testing: read_file(), size() and get_planet()") {
   // checking wrong file
   CHECK_THROWS_AS(planets2.read_file("data_test/test10.txt"),
                   std::runtime_error);
+  CHECK_THROWS_AS(planets2.read_file("data_test/test11.txt"),
+                  std::runtime_error);
 }
 
 TEST_CASE("Testing: iteration()") {
