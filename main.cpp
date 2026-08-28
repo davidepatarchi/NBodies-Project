@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdio>
 #include <iostream>
+#include <limits>
 
 #include "gravity.hpp"
 
@@ -11,7 +12,7 @@ int main() {
   double t{0.};
   int T;
   std::cout << "How many days is the simulations going to last?\n";
-  if (!(std::cin >> T) || !std::isfinite(T) || T < 1) {
+  if (!(std::cin >> T) || T == std::numeric_limits<int>::max() || T < 1) {
     throw std::invalid_argument("ERROR: The time chosen is not valid!");
   }
   T *= 86400;  // converting days in seconds

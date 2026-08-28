@@ -17,7 +17,7 @@ vector vector::operator/(double a) const {
 }
 vector vector::operator-(vector const& z) const { return {x - z.x, y - z.y}; }
 bool vector::operator==(vector const& z) const { return x == z.x && y == z.y; }
-double vector::norm() const { return sqrt(x * x + y * y); }
+double vector::norm() const { return std::sqrt(x * x + y * y); }
 // END OF VECTOR'S METHODS
 
 // PLANET'S METHODS
@@ -95,11 +95,10 @@ void System::iteration() {
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
+        double distance =
+            (planets[j].position() - planets[i].position()).norm();
         double new_acc =
-            constants::G * planets[j].mass() /
-            ((planets[j].position() - planets[i].position()).norm() *
-             (planets[j].position() - planets[i].position()).norm() *
-             (planets[j].position() - planets[i].position()).norm());
+            constants::G * planets[j].mass() / (distance * distance * distance);
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
@@ -130,8 +129,9 @@ void System::collision() {
                               (planets[i].mass() + planets[j].mass());
         vector new_acceleration{0., 0.};
         double new_mass = planets[i].mass() + planets[j].mass();
-        double new_radius = sqrt(planets[i].radius() * planets[i].radius() +
-                                 planets[j].radius() * planets[j].radius());
+        double new_radius =
+            std::sqrt(planets[i].radius() * planets[i].radius() +
+                      planets[j].radius() * planets[j].radius());
 
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j));
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
@@ -142,11 +142,10 @@ void System::collision() {
         size_t M = planets.size();
         vector sum{0., 0.};
         for (size_t k{0}; k < M; ++k) {
-          double new_acc =
-              nbodies::constants::G * planets[k].mass() /
-              ((planets[k].position() - new_planet.position()).norm() *
-               (planets[k].position() - new_planet.position()).norm() *
-               (planets[k].position() - new_planet.position()).norm());
+          double distance =
+              (planets[j].position() - planets[i].position()).norm();
+          double new_acc = nbodies::constants::G * planets[k].mass() /
+                           (distance * distance * distance);
           sum = sum - (new_planet.position() - planets[k].position()) * new_acc;
         }
         new_planet.acceleration() = sum;
@@ -196,6 +195,7 @@ void System::read_file(const std::string& filename) {
                 {0., 0.}, radius);
     planets.push_back(body);
   }
+
   // setting initial accelerations from data
   size_t N = planets.size();
   for (size_t i{0}; i < N; ++i) {
@@ -203,11 +203,15 @@ void System::read_file(const std::string& filename) {
 
     for (size_t j{0}; j < N; ++j) {
       if (j != i) {
+        double distance =
+            (planets[j].position() - planets[i].position()).norm();
+        if (!std::isfinite(distance)) {
+          throw std::runtime_error(
+              "Error: There are planets in the same position! ");
+        }
+
         double new_acc =
-            constants::G * planets[j].mass() /
-            ((planets[j].position() - planets[i].position()).norm() *
-             (planets[j].position() - planets[i].position()).norm() *
-             (planets[j].position() - planets[i].position()).norm());
+            constants::G * planets[j].mass() / (distance * distance * distance);
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
       }
     }
@@ -261,7 +265,7 @@ double System::scale_energy() {
 }
 
 vector System::momentum() {
-  vector momentum;
+  vector momentum{0., 0.};
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
                                  return sum + body.velocity().x * body.mass();
@@ -274,7 +278,7 @@ vector System::momentum() {
 }
 
 vector System::scale_momentum() {
-  vector momentum;
+  vector momentum{0., 0.};
   momentum.x = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + std::abs(body.velocity().x * body.mass());
@@ -317,7 +321,7 @@ float pixel_radius(double r) {
   }
 
   int exp = int(std::log10(r));
-  double base = r / pow(10, exp);
+  double base = r / std::pow(10, exp);
   if (base < 5) {
     return float(exp);
   }
