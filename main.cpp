@@ -21,10 +21,10 @@ int main() {
   planets.collision();
 
   // CREATING SFML WINDOW
-  const int WIDTH = 800;
-  const int HEIGHT = 800;
 
-  sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "N-BODIES SIMULATION");
+  sf::RenderWindow window(
+      sf::VideoMode(nbodies::constants::width, nbodies::constants::height),
+      "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
   // SETTING COLORS
@@ -40,14 +40,14 @@ int main() {
 
   sf::RectangleShape info_panel;
   info_panel.setSize(sf::Vector2f(280.f, 140.f));
-  info_panel.setPosition(WIDTH - 320.f, 10.f);
+  info_panel.setPosition(nbodies::constants::height - 320.f, 10.f);
   info_panel.setFillColor(sf::Color::Transparent);
 
   sf::Text info_text;
   info_text.setFont(font);
   info_text.setCharacterSize(16);
   info_text.setFillColor(sf::Color::White);
-  info_text.setPosition(WIDTH - 310.f, 20.f);
+  info_text.setPosition(nbodies::constants::width - 310.f, 20.f);
 
   // GETTING INITIAL VALUES
   double init_energy{planets.energy()};

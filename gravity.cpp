@@ -70,6 +70,13 @@ Planet& System::get_planet(size_t i) {
     throw std::runtime_error("Value of get_planet to high");
   }
 }
+Planet const& System::get_planet(size_t i) const {
+  if (i < planets.size()) {
+    return planets[i];
+  } else {
+    throw std::runtime_error("Value of get_planet to high");
+  }
+}
 
 size_t System::size() const { return planets.size(); }
 
@@ -216,7 +223,7 @@ void System::read_file(const std::string& filename) {
   check_size();
 }
 
-double System::energy() {
+double System::energy() const {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -238,7 +245,7 @@ double System::energy() {
   return kinetic + potential;
 }
 
-double System::scale_energy() {
+double System::scale_energy() const {
   double kinetic = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + 0.5 * body.mass() * body.velocity().norm() *
@@ -260,7 +267,7 @@ double System::scale_energy() {
   return kinetic + potential;
 }
 
-vector System::momentum() {
+vector System::momentum() const {
   vector momentum;
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
@@ -273,7 +280,7 @@ vector System::momentum() {
   return momentum;
 }
 
-vector System::scale_momentum() {
+vector System::scale_momentum() const {
   vector momentum;
   momentum.x = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
@@ -286,7 +293,7 @@ vector System::scale_momentum() {
   return momentum;
 }
 
-double System::angular_momentum() {
+double System::angular_momentum() const {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + body.mass() * (body.position().x * body.velocity().y -
@@ -294,7 +301,7 @@ double System::angular_momentum() {
       });
 }
 
-double System::scale_angular_momentum() {
+double System::scale_angular_momentum() const {
   return std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum +
@@ -306,10 +313,10 @@ double System::scale_angular_momentum() {
 
 // SFML FUNCTIONS
 float AU_pixel_x(double x) {
-  return float((1 + (x / nbodies::constants::AU) * 0.9) * 400.);
+  return float((1 + (x / nbodies::constants::AU) * 0.9) * (nbodies::constants::height/2.));
 }
 float AU_pixel_y(double y) {
-  return float((1 - (y / nbodies::constants::AU) * 0.9) * 400.);
+  return float((1 - (y / nbodies::constants::AU) * 0.9) * (nbodies::constants::width/2.));
 }
 float pixel_radius(double r) {
   if (r < 10) {

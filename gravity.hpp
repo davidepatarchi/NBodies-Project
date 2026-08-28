@@ -11,6 +11,8 @@ namespace constants {
 inline constexpr double G = 6.6743e-11;
 inline constexpr int dt = 60;
 inline constexpr long int AU = 149597870700;
+inline constexpr float width = 800.f;
+inline constexpr float height = 800.f;
 
 }  // namespace constants
 
@@ -57,16 +59,17 @@ class System {
 
  public:
   Planet& get_planet(size_t i);
+  Planet const& get_planet(size_t i) const;
   size_t size() const;
   void iteration();
   void collision();
   void read_file(const std::string& filename);
-  double energy();
-  double scale_energy();
-  vector momentum();
-  vector scale_momentum();
-  double angular_momentum();
-  double scale_angular_momentum();
+  double energy() const;
+  double scale_energy() const;
+  vector momentum() const;
+  vector scale_momentum() const;
+  double angular_momentum() const;
+  double scale_angular_momentum() const;
 };
 
 float AU_pixel_x(double x);
