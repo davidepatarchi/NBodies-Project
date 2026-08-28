@@ -212,7 +212,11 @@ void System::read_file(const std::string& filename) {
       if (j != i) {
         double distance =
             (planets[j].position() - planets[i].position()).norm();
-        if (!std::isfinite(distance)) {
+        /*if (!std::isfinite(distance)) {
+          throw std::runtime_error(
+              "Error: There are planets in the same position! ");
+        }*/
+        if (planets[i].position() == planets[j].position()) {
           throw std::runtime_error(
               "Error: There are planets in the same position! ");
         }
@@ -271,13 +275,8 @@ double System::scale_energy() const {
   return kinetic + potential;
 }
 
-<<<<<<< HEAD
 vector System::momentum() const {
-  vector momentum;
-=======
-vector System::momentum() {
   vector momentum{0., 0.};
->>>>>>> 2c9e209e652379d45767bb12fc646e41f37c3199
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
                                  return sum + body.velocity().x * body.mass();
@@ -288,14 +287,8 @@ vector System::momentum() {
                                });
   return momentum;
 }
-
-<<<<<<< HEAD
 vector System::scale_momentum() const {
-  vector momentum;
-=======
-vector System::scale_momentum() {
   vector momentum{0., 0.};
->>>>>>> 2c9e209e652379d45767bb12fc646e41f37c3199
   momentum.x = std::accumulate(
       planets.begin(), planets.end(), 0.0, [](double sum, Planet const& body) {
         return sum + std::abs(body.velocity().x * body.mass());
@@ -327,10 +320,12 @@ double System::scale_angular_momentum() const {
 
 // SFML FUNCTIONS
 float AU_pixel_x(double x) {
-  return float((1 + (x / nbodies::constants::AU) * 0.9) * (nbodies::constants::height/2.));
+  return float((1 + (x / nbodies::constants::AU) * 0.9) *
+               (nbodies::constants::height / 2.));
 }
 float AU_pixel_y(double y) {
-  return float((1 - (y / nbodies::constants::AU) * 0.9) * (nbodies::constants::width/2.));
+  return float((1 - (y / nbodies::constants::AU) * 0.9) *
+               (nbodies::constants::width / 2.));
 }
 float pixel_radius(double r) {
   if (r < 10) {
