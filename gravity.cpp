@@ -150,7 +150,7 @@ void System::collision() {
         vector sum{0., 0.};
         for (size_t k{0}; k < M; ++k) {
           double distance =
-              (planets[j].position() - planets[i].position()).norm();
+              (new_planet.position() - planets[k].position()).norm();
           double new_acc = nbodies::constants::G * planets[k].mass() /
                            (distance * distance * distance);
           sum = sum - (new_planet.position() - planets[k].position()) * new_acc;
