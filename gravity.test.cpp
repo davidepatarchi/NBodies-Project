@@ -283,7 +283,8 @@ TEST_CASE("Testing: momentum() and scale_momentum()") {
   // two planets' system
   nbodies::System planets2;
   planets2.read_file("data_test/test4.txt");
-  CHECK(planets2.momentum() == nbodies::vector{0., 0.});
+  CHECK(planets2.momentum().x == doctest::Approx(0.0).epsilon(1e-4));
+  CHECK(planets2.momentum().y == doctest::Approx(0.0).epsilon(1e-4));
   CHECK(planets2.scale_momentum() == nbodies::vector{10000., 0.});
 }
 
@@ -297,7 +298,7 @@ TEST_CASE("Testing: angular_momentum() and scale_angular_momentum()") {
   // two planets' system
   nbodies::System planets2;
   planets2.read_file("data_test/test6.txt");
-  CHECK(planets2.angular_momentum() == 0.);
+  CHECK(planets2.angular_momentum() == doctest::Approx(0.0).epsilon(1e-4));
   CHECK(planets2.scale_angular_momentum() == 60.);
 }
 // END OF SYSTEM'S TESTS

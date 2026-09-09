@@ -5,8 +5,12 @@
 
 #include "gravity.hpp"
 
-int main() {
+int main(int argc, char* argv[]) {
   nbodies::System planets;
+  if (argc != 2) {
+    std::cerr << "Invalid number of elements!";
+    return EXIT_FAILURE;
+  }
 
   // SETTING TIMES
   long long int t{0};
@@ -18,7 +22,7 @@ int main() {
   T *= 86400;  // converting days in seconds
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/solarsystem.txt");
+  planets.read_file(argv[1]);
   planets.collision();
 
   // CREATING SFML WINDOW
