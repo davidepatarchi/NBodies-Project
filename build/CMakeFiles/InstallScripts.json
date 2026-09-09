@@ -1,0 +1,11 @@
+{
+	"Configs" : 
+	[
+		"Debug"
+	],
+	"InstallScripts" : 
+	[
+		"/Users/davidepatarchi/Fisica/programmazione_fisica/NBodies-Project/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

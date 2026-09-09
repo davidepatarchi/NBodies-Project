@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
   // CREATING SFML WINDOW
 
   sf::RenderWindow window(
-      sf::VideoMode(nbodies::constants::width, nbodies::constants::height),
+      sf::VideoMode(size_t(nbodies::constants::width), size_t(nbodies::constants::height)),
       "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
