@@ -5,8 +5,12 @@
 
 #include "gravity.hpp"
 
-int main() {
+int main(int argc, char* argv[]) {
   nbodies::System planets;
+  if (argc != 2) {
+    std::cerr << "Invalid number of elements!";
+    return EXIT_FAILURE;
+  }
 
   // SETTING TIMES
   long long int t{0};
@@ -18,13 +22,17 @@ int main() {
   T *= 86400;  // converting days in seconds
 
   // READING FILE WITH PLANETS DATA
+<<<<<<< HEAD
   planets.read_file("data/collision1.txt");
+=======
+  planets.read_file(argv[1]);
+>>>>>>> a1573c27eac84024a2be9083b6cd9456fe002a45
   planets.collision();
 
   // CREATING SFML WINDOW
 
   sf::RenderWindow window(
-      sf::VideoMode(nbodies::constants::width, nbodies::constants::height),
+      sf::VideoMode(size_t(nbodies::constants::width), size_t(nbodies::constants::height)),
       "N-BODIES SIMULATION");
   window.setFramerateLimit(60);  // 60 FPS
 
