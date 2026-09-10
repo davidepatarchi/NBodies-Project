@@ -18,7 +18,7 @@ int main() {
   T *= 86400;  // converting days in seconds
 
   // READING FILE WITH PLANETS DATA
-  planets.read_file("data/solarsystem.txt");
+  planets.read_file("data/collision1.txt");
   planets.collision();
 
   // CREATING SFML WINDOW

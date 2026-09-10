@@ -63,6 +63,7 @@ void System::check_size() const {
     throw std::runtime_error{"ERROR: Empty file!"};
   }
 }
+
 Planet& System::get_planet(size_t i) {
   if (i < planets.size()) {
     return planets[i];
@@ -124,21 +125,23 @@ void System::iteration() {
 void System::collision() {
   for (size_t i{0}; i < planets.size();) {
     size_t init_size = planets.size();
+    Planet& pi = planets[i];
+
     for (size_t j = i + 1; j < planets.size(); ++j) {
-      if ((planets[i].position() - planets[j].position()).norm() <=
-          planets[i].radius() + planets[j].radius()) {
+      Planet& pj = planets[j];
+      if ((pi.position() - pj.position()).norm() <= pi.radius() + pj.radius()) {
         // creating new coordinates
-        vector new_position = (planets[i].position() * planets[i].mass() +
-                               planets[j].position() * planets[j].mass()) /
-                              (planets[i].mass() + planets[j].mass());
-        vector new_velocity = (planets[i].velocity() * planets[i].mass() +
-                               planets[j].velocity() * planets[j].mass()) /
-                              (planets[i].mass() + planets[j].mass());
+
+        vector new_position =
+            (pi.position() * planets[i].mass() + pj.position() * pj.mass()) /
+            (pi.mass() + pj.mass());
+        vector new_velocity =
+            (pi.velocity() * pi.mass() + pj.velocity() * pj.mass()) /
+            (pi.mass() + pj.mass());
         vector new_acceleration{0., 0.};
-        double new_mass = planets[i].mass() + planets[j].mass();
+        double new_mass = pi.mass() + pj.mass();
         double new_radius =
-            std::sqrt(planets[i].radius() * planets[i].radius() +
-                      planets[j].radius() * planets[j].radius());
+            std::sqrt(pi.radius() * pi.radius() + pj.radius() * pj.radius());
 
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(j));
         planets.erase(planets.begin() + static_cast<std::ptrdiff_t>(i));
@@ -215,7 +218,8 @@ void System::read_file(const std::string& filename) {
               "Error: There are planets in the same position! ");
         }
 
-        double distance = (planets[i].position() - planets[j].position()).norm();
+        double distance =
+            (planets[i].position() - planets[j].position()).norm();
         double new_acc =
             constants::G * planets[j].mass() / (distance * distance * distance);
         sum = sum - (planets[i].position() - planets[j].position()) * new_acc;
@@ -271,7 +275,7 @@ double System::scale_energy() const {
 }
 
 vector System::momentum() const {
-  vector momentum{0., 0.};
+  /*vector momentum{0., 0.};
   momentum.x = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
                                  return sum + body.velocity().x * body.mass();
@@ -279,8 +283,12 @@ vector System::momentum() const {
   momentum.y = std::accumulate(planets.begin(), planets.end(), 0.0,
                                [](double sum, Planet const& body) {
                                  return sum + body.velocity().y * body.mass();
-                               });
-  return momentum;
+                               });*/
+
+  return std::accumulate(planets.begin(), planets.end(), vector{0., 0.},
+                         [](vector sum, Planet const& body) {
+                           return sum + body.velocity() * body.mass();
+                         });
 }
 vector System::scale_momentum() const {
   vector momentum{0., 0.};
